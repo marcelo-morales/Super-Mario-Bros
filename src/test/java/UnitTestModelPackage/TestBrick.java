@@ -1,4 +1,6 @@
+package UnitTestModelPackage;
 import manager.GameEngine;
+
 import model.brick.GroundBrick;
 import model.brick.OrdinaryBrick;
 import model.brick.SurpriseBrick;

@@ -23,7 +23,7 @@ public class GameEngine implements Runnable {
     private StartScreenSelection startScreenSelection = StartScreenSelection.START_GAME;
     private int selectedMap = 0;
 
-    private GameEngine() {
+    public GameEngine() {
         init();
     }
 
@@ -87,6 +87,7 @@ public class GameEngine implements Runnable {
     }
 
     private void createMap(String path) {
+        System.out.println("this is imageLoader " + imageLoader.toString());
         boolean loaded = mapManager.createMap(imageLoader, path);
         if(loaded){
             setGameStatus(GameStatus.RUNNING);
