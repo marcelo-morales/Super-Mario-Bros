@@ -1,3 +1,5 @@
+package UnitTestModelPackage;
+
 import model.brick.GroundBrick;
 import model.brick.OrdinaryBrick;
 import model.brick.SurpriseBrick;

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class MapManager {
 
-    private Map map;
+    public Map map;
 
     public MapManager() {}
 
@@ -37,6 +37,7 @@ public class MapManager {
     }
 
     public boolean createMap(ImageLoader loader, String path) {
+        System.out.println("this is a path " + path);
         MapCreator mapCreator = new MapCreator(loader);
         map = mapCreator.createMap("/maps/" + path, 400);
 
