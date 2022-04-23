@@ -6,6 +6,9 @@ import model.brick.OrdinaryBrick;
 import model.brick.SurpriseBrick;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import view.ImageLoader;
+
+import java.awt.image.BufferedImage;
 
 /**
  * GroundBrick, OrdinaryBrick, Pipe, and SurpriseBrick
@@ -19,18 +22,41 @@ public class TestBrick {
     SurpriseBrick surp;
 
     /**
-     * Might be better for interaction-based testing,
-     * because function primarily only changes given
-     * game engine object.
-     * Have to run main to get GameEngine object,
-     * opportunity for mock-testing?
+     * test
      */
     @Test
-    public void testOrdinaryBrickReveal() {
-        //GameEngine eng = new GameEngine();
+    public void testOrdinaryBrickReveal00() {
+        GameEngine eng = new GameEngine();
+        ImageLoader imageLoader = new ImageLoader();
+        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
+        BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
 
+        ord = new OrdinaryBrick(50, 50, brickStyle);
+        ord.reveal(eng);
+
+        //check if ord sets correct location
     }
 
+    /**
+     * Todo: make this test interaction based testing
+     * check that correct changes being made to mapManager object
+     */
+    @Test
+    public void testOrdinaryBrickReveal01() {
+        GameEngine eng = new GameEngine();
+        ImageLoader imageLoader = new ImageLoader();
+        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
+        BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
+
+        ord = new OrdinaryBrick(50, 50, brickStyle);
+        ord.reveal(eng);
+
+        //check if ord sets correct location
+    }
+
+    /**
+     * test helper method updateLocation
+     */
     @Test
     public void testOrdinaryBrickUpdateLocation() {
 
