@@ -12,6 +12,10 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Whitebox testing to test the Animation class.
+ * Goal to achieve branch coverage.
+ */
 public class AnimationTest {
     private Animation animation;
     private BufferedImage[] leftFrames, rightFrames;
