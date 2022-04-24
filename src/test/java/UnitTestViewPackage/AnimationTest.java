@@ -119,7 +119,6 @@ public class AnimationTest {
     /**
      * Test animate() when the length of the array is less than three.
      */
-    @Disabled
     @Test
     void testAnimateCountGreaterThanSpeedToRightArrayLengthLessThanThree() {
         rightFrames = new BufferedImage[2];
