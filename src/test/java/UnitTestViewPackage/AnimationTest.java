@@ -15,20 +15,28 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AnimationTest {
     private Animation animation;
     private BufferedImage[] leftFrames, rightFrames;
-    private BufferedImage currentFrame;
 
     @BeforeEach
     void setup() {
         final String imagePath = "/about-screen.png";
-
+        BufferedImage frame = null;
         animation = null;
+        leftFrames = new BufferedImage[10];
+        rightFrames = new BufferedImage[10];
 
         // load images
         try {
-            currentFrame = ImageIO.read(getClass().getResource("/media" + imagePath));
+            frame = ImageIO.read(getClass().getResource("/media" + imagePath));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        for (int i = 0; i < 10; i++) {
+            leftFrames[i] = frame;
+            rightFrames[i] = frame;
+        }
+
+        animation = new Animation(leftFrames, rightFrames);
     }
 
     /**
@@ -49,7 +57,7 @@ public class AnimationTest {
     }
 
     /**
-     * Test constructor with arrays of length 1.
+     * Test constructor with arrays of length 0.
      */
     // TODO: remove disabled. desired outcome?
     @Disabled
@@ -73,14 +81,6 @@ public class AnimationTest {
      */
     @Test
     void testConstructorArraysWithLengthTen() {
-        leftFrames = new BufferedImage[10];
-        rightFrames = new BufferedImage[10];
-
-        for (int i = 0; i < 10; i++) {
-            leftFrames[i] = currentFrame;
-            rightFrames[i] = currentFrame;
-        }
-
         try {
             animation = new Animation(leftFrames, rightFrames);
         } catch (Exception e) {
@@ -92,8 +92,8 @@ public class AnimationTest {
     }
 
     // TODO: how do we unit test methods that modify private variables?
-    void testNextFrameArrayLengthTwo() {
-
+    void testAnimateCountGreaterThanSpeedToRight() {
+        animation.animate(0, true);
     }
 
 }
