@@ -15,25 +15,26 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AnimationTest {
     private Animation animation;
     private BufferedImage[] leftFrames, rightFrames;
+    final String imagePath = "/about-screen.png";
 
     @BeforeEach
     void setup() {
-        final String imagePath = "/about-screen.png";
-        BufferedImage frame = null;
         animation = null;
         leftFrames = new BufferedImage[10];
         rightFrames = new BufferedImage[10];
 
         // load images
         try {
-            frame = ImageIO.read(getClass().getResource("/media" + imagePath));
+            for (int i = 0; i < leftFrames.length; i++) {
+                BufferedImage frame = ImageIO.read(getClass().getResource("/media" + imagePath));
+                leftFrames[i] = frame;
+            }
+            for (int i = 0; i < rightFrames.length; i++) {
+                BufferedImage frame = ImageIO.read(getClass().getResource("/media" + imagePath));
+                rightFrames[i] = frame;
+            }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        for (int i = 0; i < 10; i++) {
-            leftFrames[i] = frame;
-            rightFrames[i] = frame;
         }
 
         animation = new Animation(leftFrames, rightFrames);
@@ -91,9 +92,55 @@ public class AnimationTest {
         assertEquals(rightFrames, animation.getRightFrames());
     }
 
-    // TODO: how do we unit test methods that modify private variables?
-    void testAnimateCountGreaterThanSpeedToRight() {
-        animation.animate(0, true);
+    /**
+     * Test animate() when the count is not greater than speed.
+     */
+    @Test
+    void testAnimateCountNotGreaterThanSpeed() {
+        assertEquals(rightFrames[1], animation.animate(5, true));
     }
 
+    /**
+     * Test animate() when the count is greater than speed, and toRight = true.
+     */
+    @Test
+    void testAnimateCountGreaterThanSpeedToRight() {
+        assertEquals(rightFrames[2], animation.animate(0, true));
+    }
+
+    /**
+     * Test animate() when the count is greater than speed, and toRight = false.
+     */
+    @Test
+    void testAnimateCountGreaterThanSpeedToLeft() {
+        assertEquals(leftFrames[2], animation.animate(0, false));
+    }
+
+    /**
+     * Test animate() when the length of the array is less than three.
+     */
+    @Disabled
+    @Test
+    void testAnimateCountGreaterThanSpeedToRightArrayLengthLessThanThree() {
+        rightFrames = new BufferedImage[2];
+
+        // load images
+        try {
+            for (int i = 0; i < rightFrames.length; i++) {
+                BufferedImage frame = ImageIO.read(getClass().getResource("/media" + imagePath));
+                rightFrames[i] = frame;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        animation = new Animation(leftFrames, rightFrames);
+
+        try {
+            animation.animate(0, true);
+            assertEquals(rightFrames[2], animation.animate(0, true));
+        } catch (Exception e) {
+            fail("Unexpected exception thrown\n" + e);
+        }
+    }
 }
