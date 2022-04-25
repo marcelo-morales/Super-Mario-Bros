@@ -8,6 +8,10 @@ import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Whitebox testing to test the MapSelectionItem class.
+ * Goal to achieve branch coverage.
+ */
 public class MapSelectionItemTest {
 
     int defaultGridSize = 100;
@@ -20,6 +24,9 @@ public class MapSelectionItemTest {
         map = new MapSelectionItem(mapName, location);
     }
 
+    /**
+     * Test the constructor and if the values are set correctly.
+     */
     @Test
     void testConstructor() {
         assertEquals(mapName, map.getName());
@@ -27,6 +34,9 @@ public class MapSelectionItemTest {
         assertEquals(new Dimension(), map.getDimension());
     }
 
+    /**
+     * Test setDimension().
+     */
     @Test
     void testSetDimension() {
         Dimension dimension = new Dimension(10, 20);
@@ -34,6 +44,9 @@ public class MapSelectionItemTest {
         assertEquals(dimension, map.getDimension());
     }
 
+    /**
+     * Test setLocation().
+     */
     @Test
     void testSetLocation() {
         Point location = new Point(20, 30);
