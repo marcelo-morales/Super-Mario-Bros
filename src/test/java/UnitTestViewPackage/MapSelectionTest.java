@@ -2,7 +2,6 @@ package UnitTestViewPackage;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import view.MapSelection;
 
 import javax.imageio.ImageIO;
