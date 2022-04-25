@@ -1,6 +1,7 @@
 import manager.ButtonAction;
 import manager.GameStatus;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import manager.GameEngine;
 import view.StartScreenSelection;
@@ -8,6 +9,7 @@ import view.StartScreenSelection;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+@Disabled
 public class testGameEngine {
 
     public GameEngine gameEngine;
