@@ -1,4 +1,5 @@
 package UnitTestModelPackage;
+
 import manager.GameEngine;
 
 import model.brick.GroundBrick;
@@ -22,7 +23,8 @@ public class TestBrick {
     SurpriseBrick surp;
 
     /**
-     * test
+     * test that all fields of a brick are appropriately
+     * updated after calling the reveal method.
      */
     @Test
     public void testOrdinaryBrickReveal00() {
@@ -32,9 +34,15 @@ public class TestBrick {
         BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
 
         ord = new OrdinaryBrick(50, 50, brickStyle);
+        ord.setJumping(true);
+        ord.setVelY(10);
         ord.reveal(eng);
 
-        //check if ord sets correct location
+        //check if ord sets correct for both jumping and falling
+        assert(ord.getVelX() == 0);
+        assert(ord.getVelY() == (10-0.38));
+        assert(ord.getX() == 50);
+        assert(ord.getY() == 60);
     }
 
     /**
