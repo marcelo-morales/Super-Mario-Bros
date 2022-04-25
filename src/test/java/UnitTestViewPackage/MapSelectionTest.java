@@ -2,9 +2,13 @@ package UnitTestViewPackage;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import view.MapSelection;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,6 +20,11 @@ import static org.junit.jupiter.api.Assertions.*;
  *      cannot achieve branch coverage in createItems() method.
  *      the condition "if(maps == null)" is never true because on the class instantiation, maps = new ArrayList<>().
  *      Hence maps is never null.
+ *
+ *      cannot achieve branch coverage in draw() method.
+ *      the condition "if(mapSelectionItems=null)" is never true because in the createItems() method, it always
+ *      returns a non-null array (although it can be empty).
+ *      Hence the branch never executes.
  */
 public class MapSelectionTest {
     String[] maps = {"Map 1.png", "Map 2.png"};
@@ -26,7 +35,23 @@ public class MapSelectionTest {
         mapSelection = new MapSelection();
     }
 
-    // TODO: test the draw() method??? How to test that...?
+    /**
+     * Test draw() method.
+     *
+     * To achieve branch coverage.
+     */
+    // TODO: how to properly test the draw() method...?
+    @Test
+    void testDraw() {
+        BufferedImage mario = null;
+        try {
+            mario = ImageIO.read(new File("src/main/resources/media/mario-forms.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Graphics graphics = mario.getGraphics();
+        mapSelection.draw(graphics);
+    }
 
     /**
      * Test selectMap(Point) with selecting map 1.
