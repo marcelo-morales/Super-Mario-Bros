@@ -11,8 +11,11 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Whitebox testing to test the Animation class.
- * Goal to achieve branch coverage.
+ * Test class to test the Animation class.
+ *
+ * No blackbox testing because the behavior cannot be assumed from method signature.
+ * Whitebox testing for each method, aim to achieve branch coverage.
+ * Mutation testing, aim to achieve maximum mutation coverage.
  *
  * Notes:
  *      testAnimateCountGreaterThanSpeedToRightArrayLengthLessThanThree() test method fails.
@@ -48,6 +51,8 @@ public class AnimationTest {
 
     /**
      * Test constructor with null arrays.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testConstructorNullArrays() {
@@ -61,6 +66,8 @@ public class AnimationTest {
 
     /**
      * Test constructor with arrays of length 0.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testConstructorArraysWithLengthZero() {
@@ -77,6 +84,8 @@ public class AnimationTest {
 
     /**
      * Test constructor with arrays of length 10.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testConstructorArraysWithLengthTen() {
@@ -92,6 +101,8 @@ public class AnimationTest {
 
     /**
      * Test animate() when the count is not greater than speed.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testAnimateCountNotGreaterThanSpeed() {
@@ -100,6 +111,8 @@ public class AnimationTest {
 
     /**
      * Test animate() when the count is greater than speed, and toRight = true.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testAnimateCountGreaterThanSpeedToRight() {
@@ -108,6 +121,8 @@ public class AnimationTest {
 
     /**
      * Test animate() when the count is greater than speed, and toRight = false.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testAnimateCountGreaterThanSpeedToLeft() {
@@ -116,6 +131,8 @@ public class AnimationTest {
 
     /**
      * Test animate() when the length of the array is less than three.
+     *
+     * goal: whitebox testing branch coverage
      */
     // TODO: remove disabled
     @Disabled
