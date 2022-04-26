@@ -50,6 +50,7 @@ public class GameEngine implements Runnable {
     }
 
     private synchronized void start() {
+
         if (isRunning)
             return;
 
@@ -87,7 +88,7 @@ public class GameEngine implements Runnable {
     }
 
     private void createMap(String path) {
-        System.out.println("this is imageLoader " + imageLoader.toString());
+        //System.out.println("this is imageLoader " + imageLoader.toString());
         boolean loaded = mapManager.createMap(imageLoader, path);
         if(loaded){
             setGameStatus(GameStatus.RUNNING);
