@@ -4,7 +4,9 @@ import manager.SoundManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class TestSoundManager {
 
@@ -17,18 +19,23 @@ public class TestSoundManager {
 
     @Test
     public void testResumeBackground() {
+
         soundManager.resumeBackground();
+        assertTrue(soundManager.background.isOpen());
     }
 
     @Test
     public void testPauseBackground() {
-
+        soundManager.pauseBackground();
+        assertFalse(soundManager.background.isRunning());
     }
 
     @Test
     public void testRestartBackground() {
-
-
+        soundManager.restartBackground();
+        soundManager.pauseBackground();
+        soundManager.restartBackground();
+        assertTrue(soundManager.background.isRunning());
     }
 
     @Test
