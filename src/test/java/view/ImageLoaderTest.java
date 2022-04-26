@@ -18,18 +18,26 @@ import static org.junit.jupiter.api.Assertions.*;
  *      cannot achieve branch coverage in loadImage(String path).
  *      the try-catch block is set to catch IOException, however, the ImageIO.read() will throw an
  *      IllegalArgumentException, and therefore will never catch IOException error.
+ *
+ *      testLoadImageStringInvalidPath() test method fails because an invalid path will throw a
+ *      IllegalArgumentException, not a IOException. Therefore the exception will not be caught and will propagate
+ *      through the program and throw the exception.
  */
 public class ImageLoaderTest {
-    private final String imagePath = "src/main/resources/media/mario-forms.png";
+    private final String marioPath = "src/main/resources/media/mario-forms.png";
+    private final String spritePath = "src/main/resources/media/sprite.png";
     private ImageLoader loader;
     private BufferedImage marioImage;
+    private BufferedImage spriteImage;
 
     @BeforeEach
     void setup() {
         loader = new ImageLoader();
-        File file = new File(imagePath);
+        File mario = new File(marioPath);
+        File sprite = new File(spritePath);
         try {
-            marioImage = ImageIO.read(file);
+            marioImage = ImageIO.read(mario);
+            spriteImage = ImageIO.read(sprite);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,7 +56,7 @@ public class ImageLoaderTest {
      */
     @Test
     void testLoadImageFileValidFile() {
-        File file = new File(imagePath);
+        File file = new File(marioPath);
         assertTrue(CompareImages.compareImages(marioImage, loader.loadImage(file)));
     }
 
@@ -61,7 +69,29 @@ public class ImageLoaderTest {
         assertNull(loader.loadImage(file));
     }
 
-    // TODO: test getSubImage()???
+    /**
+     * Test getSubImage() with Koopa.
+     */
+    @Test
+    void testGetSubImageKoopa() {
+        int col = 1;
+        int row = 3;
+        BufferedImage koopa = spriteImage.getSubimage((col-1)*48, 128, 48, 48);
+        BufferedImage subImage = loader.getSubImage(spriteImage, col, row, 48, 48);
+        assertTrue(CompareImages.compareImages(koopa, subImage));
+    }
+
+    /**
+     * Test getSubImage() with SuperMushroom.
+     */
+    @Test
+    void testGetSubImageSuperMushroom() {
+        int col = 2;
+        int row = 5;
+        BufferedImage superMushroom = spriteImage.getSubimage((col-1)*48, (row-1)*48, 48, 48);
+        BufferedImage subImage = loader.getSubImage(spriteImage, col, row, 48, 48);
+        assertTrue(CompareImages.compareImages(superMushroom, subImage));
+    }
 
     /**
      * Test getLeftFrames() when marioForm = 0.
