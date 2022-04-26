@@ -6,7 +6,6 @@ import manager.GameStatus;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -99,7 +98,7 @@ public class UIManager extends JPanel{
         g2.drawString(displayedStr, 750, 50);
     }
 
-    private void drawVictoryScreen(Graphics2D g2) {
+    protected void drawVictoryScreen(Graphics2D g2) {
         g2.setFont(gameFont.deriveFont(50f));
         g2.setColor(Color.WHITE);
         String displayedStr = "YOU WON!";
@@ -107,15 +106,15 @@ public class UIManager extends JPanel{
         g2.drawString(displayedStr, (getWidth()-stringLength)/2, getHeight()/2);
     }
 
-    private void drawHelpScreen(Graphics2D g2) {
+    protected void drawHelpScreen(Graphics2D g2) {
         g2.drawImage(helpScreenImage, 0, 0, null);
     }
 
-    private void drawAboutScreen(Graphics2D g2) {
+    protected void drawAboutScreen(Graphics2D g2) {
         g2.drawImage(aboutScreenImage, 0, 0, null);
     }
 
-    private void drawGameOverScreen(Graphics2D g2) {
+    protected void drawGameOverScreen(Graphics2D g2) {
         g2.drawImage(gameOverScreen, 0, 0, null);
         g2.setFont(gameFont.deriveFont(50f));
         g2.setColor(new Color(130, 48, 48));
@@ -125,7 +124,7 @@ public class UIManager extends JPanel{
         g2.drawString(acquiredPoints, (getWidth()-stringLength)/2, getHeight()-stringHeight*2);
     }
 
-    private void drawPauseScreen(Graphics2D g2) {
+    protected void drawPauseScreen(Graphics2D g2) {
         g2.setFont(gameFont.deriveFont(50f));
         g2.setColor(Color.WHITE);
         String displayedStr = "PAUSED";
@@ -158,13 +157,13 @@ public class UIManager extends JPanel{
         g2.drawString(displayedStr, 300, 50);
     }
 
-    private void drawStartScreen(Graphics2D g2){
+    protected void drawStartScreen(Graphics2D g2){
         int row = engine.getStartScreenSelection().getLineNumber();
         g2.drawImage(startScreenImage, 0, 0, null);
         g2.drawImage(selectIcon, 375, row * 70 + 440, null);
     }
 
-    private void drawMapSelectionScreen(Graphics2D g2){
+    protected void drawMapSelectionScreen(Graphics2D g2){
         g2.setFont(gameFont.deriveFont(50f));
         g2.setColor(Color.WHITE);
         mapSelection.draw(g2);
