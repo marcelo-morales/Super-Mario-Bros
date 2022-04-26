@@ -1,8 +1,7 @@
-package UnitTestViewPackage;
+package view;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import view.ImageLoader;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
