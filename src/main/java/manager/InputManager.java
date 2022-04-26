@@ -10,7 +10,7 @@ public class InputManager implements KeyListener, MouseListener{
 
     private GameEngine engine;
 
-    InputManager(GameEngine engine) {
+    public InputManager(GameEngine engine) {
         this.engine = engine; }
 
     @Override
@@ -18,6 +18,8 @@ public class InputManager implements KeyListener, MouseListener{
         int keyCode = event.getKeyCode();
         GameStatus status = engine.getGameStatus();
         ButtonAction currentAction = ButtonAction.NO_ACTION;
+
+        System.out.println("going here");
 
         if (keyCode == KeyEvent.VK_UP) {
             if(status == GameStatus.START_SCREEN || status == GameStatus.MAP_SELECTION)
