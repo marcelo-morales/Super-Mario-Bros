@@ -12,17 +12,20 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Whitebox testing to test the ImageLoader class.
- * Goal to achieve branch coverage.
+ * Test class to test the ImageLoader class.
+ *
+ * Blackbox testing for possible methods, technique determined depending on method.
+ * Whitebox testing for each method, aim to achieve branch coverage.
+ * Mutation testing, aim to achieve maximum mutation coverage.
  *
  * Notes:
  *      cannot achieve branch coverage in loadImage(String path).
  *      the try-catch block is set to catch IOException, however, the ImageIO.read() will throw an
  *      IllegalArgumentException, and therefore will never catch IOException error.
  *
- *      testLoadImageStringInvalidPath() test method fails because an invalid path will throw a
- *      IllegalArgumentException, not a IOException. Therefore the exception will not be caught and will propagate
- *      through the program and throw the exception.
+ *      testLoadImageStringNullPath(), testLoadImageStringInvalidPath(), and testLoadImageFileNullFile()
+ *      test methods fails because they will throw an IllegalArgumentException, not a IOException. Therefore the
+ *      exception will not be caught and will propagate through the program and throw the exception, not return null.
  */
 public class ImageLoaderTest {
     private final String marioPath = "src/main/resources/media/mario-forms.png";
@@ -45,7 +48,26 @@ public class ImageLoaderTest {
     }
 
     /**
+     * Test loadImage(String) with null String.
+     *
+     * goal: blackbox testing with equivalence partitioning.
+     *
+     * EP: String path - {null, not null invalid path, not null valid path}
+     */
+    // TODO: remove disabled
+    @Disabled
+    @Test
+    void testLoadImageStringNullPath() {
+        String path = null;
+        assertNull(loader.loadImage(path));
+    }
+
+    /**
      * Test loadImage(String) with invalid path.
+     *
+     * goal: blackbox testing with equivalence partitioning.
+     *
+     * EP: String path - {null, not null invalid path, not null valid path}
      */
     // TODO: remove disabled
     @Disabled
@@ -55,16 +77,39 @@ public class ImageLoaderTest {
     }
 
     /**
-     * Test loadImage(File) with valid file.
+     * Test loadImage(String) with valid path.
+     *
+     * goal: blackbox testing with equivalence partitioning.
+     *
+     * EP: String path - {null, not null invalid path, not null valid path}
      */
     @Test
-    void testLoadImageFileValidFile() {
-        File file = new File(marioPath);
-        assertTrue(CompareImages.compareImages(marioImage, loader.loadImage(file)));
+    void testLoadImageStringValidPath() {
+        String marioPath = "/mario-forms.png";
+        assertTrue(CompareImages.compareImages(marioImage, loader.loadImage(marioPath)));
+    }
+
+    /**
+     * Test loadImage(File) with null file.
+     *
+     * goal: blackbox testing with equivalence partitioning.
+     *
+     * EP: File file - {null, not null invalid file, not null valid file but not image, not null valid image}
+     */
+    // TODO: remove disabled
+    @Disabled
+    @Test
+    void testLoadImageFileNullFile() {
+        File file = null;
+        assertNull(loader.loadImage(file));
     }
 
     /**
      * Test loadImage(File) with invalid file.
+     *
+     * goal: blackbox testing with equivalence partitioning.
+     *
+     * EP: File file - {null, not null invalid file, not null valid file but not image, not null valid image}
      */
     @Test
     void testLoadImageFileInvalidFile() {
@@ -73,7 +118,33 @@ public class ImageLoaderTest {
     }
 
     /**
+     * Test loadImage(File) with a non-image file.
+     *
+     * goal: blackbox testing with equivalence partitioning.
+     *
+     * EP: File file - {null, not null invalid file, not null valid file but not image, not null valid image}
+     */
+    @Test
+    void testLoadImageFileNonImageFile() {
+        File file = new File("src/main/resources/media/audio/background.wav");
+        assertNull(loader.loadImage(file));
+    }
+
+    /**
+     * Test loadImage(File) with valid file.
+     *
+     * goal: whitebox testing branch coverage
+     */
+    @Test
+    void testLoadImageFileValidFile() {
+        File file = new File(marioPath);
+        assertTrue(CompareImages.compareImages(marioImage, loader.loadImage(file)));
+    }
+
+    /**
      * Test getSubImage() with Koopa.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testGetSubImageKoopa() {
@@ -86,6 +157,8 @@ public class ImageLoaderTest {
 
     /**
      * Test getSubImage() with SuperMushroom.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testGetSubImageSuperMushroom() {
@@ -98,6 +171,8 @@ public class ImageLoaderTest {
 
     /**
      * Test getLeftFrames() when marioForm = 0.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testGetLeftFramesMarioFormEqualsZero() {
@@ -125,6 +200,8 @@ public class ImageLoaderTest {
 
     /**
      * Test getLeftFrames() when marioForm = 1.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testGetLeftFramesMarioFormEqualsOne() {
@@ -152,6 +229,8 @@ public class ImageLoaderTest {
 
     /**
      * Test getLeftFrames() when marioForm = 2.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testGetLeftFramesMarioFormEqualsTwo() {
@@ -179,6 +258,8 @@ public class ImageLoaderTest {
 
     /**
      * Test getRightFrames() when marioForm = 0.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testGetRightFramesMarioFormEqualsZero() {
@@ -206,6 +287,8 @@ public class ImageLoaderTest {
 
     /**
      * Test getRightFrames() when marioForm = 1.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testGetRightFramesMarioFormEqualsOne() {
@@ -233,6 +316,8 @@ public class ImageLoaderTest {
 
     /**
      * Test getRightFrames() when marioForm = 2.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testGetRightFramesMarioFormEqualsTwo() {
@@ -260,6 +345,8 @@ public class ImageLoaderTest {
 
     /**
      * Test getBrickFrames().
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testGetBrickFrames() {
