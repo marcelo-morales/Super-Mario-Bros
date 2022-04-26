@@ -1,10 +1,7 @@
 package view;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import view.Animation;
-import view.ImageLoader;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -15,6 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Whitebox testing to test the Animation class.
  * Goal to achieve branch coverage.
+ *
+ * Notes:
+ *      testAnimateCountGreaterThanSpeedToRightArrayLengthLessThanThree() test method fails.
+ *      this is because the nextFrame() method assumes that the array BufferedImage[] length is at least 3.
  */
 public class AnimationTest {
     private Animation animation;
@@ -47,25 +48,19 @@ public class AnimationTest {
     /**
      * Test constructor with null arrays.
      */
-    // TODO: remove disabled. what is the desired outcome here?
-    @Disabled
     @Test
     void testConstructorNullArrays() {
         try {
             animation = new Animation(null, null);
-        } catch (Exception e) {
-            fail("Unexpected exception was thrown");
+            fail("exception was not thrown");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-
-        assertEquals(null, animation.getLeftFrames());
-        assertEquals(null, animation.getRightFrames());
     }
 
     /**
      * Test constructor with arrays of length 0.
      */
-    // TODO: remove disabled. desired outcome?
-    @Disabled
     @Test
     void testConstructorArraysWithLengthZero() {
         leftFrames = new BufferedImage[0];
@@ -73,12 +68,10 @@ public class AnimationTest {
 
         try {
             animation = new Animation(leftFrames, rightFrames);
-        } catch (Exception e) {
-            fail("Unexpected exception was thrown");
+            fail("exception was not thrown");
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
         }
-
-        assertEquals(leftFrames, animation.getLeftFrames());
-        assertEquals(rightFrames, animation.getRightFrames());
     }
 
     /**
