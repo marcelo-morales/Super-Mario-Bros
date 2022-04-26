@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'jacoco'
+    id 'info.solidsoft.pitest' version '1.5.2'
 }
 
 group 'org.example'
@@ -13,11 +14,21 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    implementation 'org.apache.commons:commons-lang3:3.11'
 }
 
 test {
     useJUnitPlatform()
     ignoreFailures = true
+}
+
+pitest {
+    junit5PluginVersion = '0.12'
+    targetClasses = ['model.*']  //by default "${project.group}.*"
+    targetTests = ['UnitTestModelPackage.*']
+    threads = 4
+    outputFormats = ['XML', 'HTML']
+    timestampedReports = false
 }
 
 jacocoTestReport {

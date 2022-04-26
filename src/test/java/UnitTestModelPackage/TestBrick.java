@@ -83,15 +83,22 @@ public class TestBrick {
      */
     @Test
     public void testOrdinaryBrickReveal02() {
-        GameEngine eng = new GameEngine();
         ImageLoader imageLoader = new ImageLoader();
+
+        GameEngine eng = new GameEngine();
+        eng.getMapManager().createMap(imageLoader, "/Map 2.png");
+        eng.getMapManager().getMario().getMarioForm().setSuper(false);
+
         BufferedImage sprite = imageLoader.loadImage("/sprite.png");
         BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
 
         ord = new OrdinaryBrick(50, 50, brickStyle);
+        assert(ord.getX() == 50);
+        assert(ord.getY() == 50);
+
         ord.reveal(eng);
 
-        //check if ord sets correct location
+        assert(true);
     }
 
     /**
