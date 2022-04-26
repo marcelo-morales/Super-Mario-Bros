@@ -25,32 +25,64 @@ public class TestBrick {
     /**
      * test that all fields of a brick are appropriately
      * updated after calling the reveal method.
+     * Branch 1, where mario is super, so reveal should
+     * update brick location, so brick location should be updated.
      */
     @Test
     public void testOrdinaryBrickReveal00() {
-        GameEngine eng = new GameEngine();
         ImageLoader imageLoader = new ImageLoader();
+
+        GameEngine eng = new GameEngine();
+        eng.getMapManager().createMap(imageLoader, "/Map 2.png");
+        eng.getMapManager().getMario().getMarioForm().setSuper(true);
+
         BufferedImage sprite = imageLoader.loadImage("/sprite.png");
         BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
 
         ord = new OrdinaryBrick(50, 50, brickStyle);
-        ord.setJumping(true);
-        ord.setVelY(10);
+        assert(ord.getX() == 50);
+        assert(ord.getY() == 50);
+
         ord.reveal(eng);
 
-        //check if ord sets correct for both jumping and falling
-        assert(ord.getVelX() == 0);
-        assert(ord.getVelY() == (10-0.38));
-        assert(ord.getX() == 50);
-        assert(ord.getY() == 60);
+        assert(ord.getX() == 23);
+        assert(ord.getY() == 23);
     }
 
     /**
-     * Todo: make this test interaction based testing
-     * check that correct changes being made to mapManager object
+     * test that all fields of a brick are appropriately
+     * updated after calling the reveal method.
+     * Branch 1, where mario is not super, so reveal
+     * should return null, so nothing should be updated.
      */
     @Test
     public void testOrdinaryBrickReveal01() {
+        ImageLoader imageLoader = new ImageLoader();
+
+        GameEngine eng = new GameEngine();
+        eng.getMapManager().createMap(imageLoader, "/Map 2.png");
+        eng.getMapManager().getMario().getMarioForm().setSuper(false);
+
+        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
+        BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
+
+        ord = new OrdinaryBrick(50, 50, brickStyle);
+        assert(ord.getX() == 50);
+        assert(ord.getY() == 50);
+
+        ord.reveal(eng);
+
+        assert(ord.getX() == 50);
+        assert(ord.getY() == 50);
+    }
+
+    /**
+     * Todo: make this test interaction based testing?
+     * check that correct changes being made to mapManager object
+     * Does that count as integration testing?
+     */
+    @Test
+    public void testOrdinaryBrickReveal02() {
         GameEngine eng = new GameEngine();
         ImageLoader imageLoader = new ImageLoader();
         BufferedImage sprite = imageLoader.loadImage("/sprite.png");
@@ -63,10 +95,36 @@ public class TestBrick {
     }
 
     /**
-     * test helper method updateLocation
+     * test helper method updateLocation.
+     * Branch 1: if not jumping and not falling.
+     * This is the only state that bricks should be in
+     * in the game.
      */
     @Test
-    public void testOrdinaryBrickUpdateLocation() {
+    public void testOrdinaryBrickUpdateLocation00() {
+        ImageLoader imageLoader = new ImageLoader();
+
+        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
+        BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
+
+        ord = new OrdinaryBrick(50, 50, brickStyle);
+        ord.setJumping(false);
+        ord.setFalling(false);
+        ord.setVelY(0);
+        ord.setVelX(0);
+
+        ord.updateLocation();
+
+        assert(!ord.isJumping());
+        assert(!ord.isFalling());
+        assert(ord.getY() == 50);
+        assert(ord.getVelY() == 0);
+        assert(ord.getVelX() == 0);
+        assert(ord.getX() == 50);
+    }
+
+    @Test
+    public void testOrdinaryBrickSetAnimation() {
 
     }
 
