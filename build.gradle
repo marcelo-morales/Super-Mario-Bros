@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'jacoco'
+    id 'info.solidsoft.pitest' version '1.7.4'
 }
 
 group 'org.example'
@@ -16,6 +17,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:3.+'
     // https://mvnrepository.com/artifact/org.mockito/mockito-inline
     testImplementation 'org.mockito:mockito-inline:4.5.1'
+    implementation 'org.apache.commons:commons-lang3:3.11'
 }
 
 test {
@@ -30,4 +32,14 @@ jacocoTestReport {
         csv.enabled true
         html.enabled true
     }
+}
+
+
+pitest {
+    junit5PluginVersion = '0.12'
+    targetClasses = ['view.*']  //by default "${project.group}.*"
+    targetTests = ['view.*Test*']
+    threads = 4
+    outputFormats = ['XML', 'HTML']
+    timestampedReports = false
 }
