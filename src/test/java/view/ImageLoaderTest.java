@@ -255,6 +255,27 @@ public class ImageLoaderTest {
         }
     }
 
-    // TODO: test getBrickFrames() ???
+    /**
+     * Test getBrickFrames().
+     */
+    @Test
+    void testGetBrickFrames() {
+        String path = "src/main/resources/media/brick-animation.png";
+        File file = new File(path);
+        BufferedImage brickAnimation = null;
+        BufferedImage brickFrames[] = new BufferedImage[4];
+        try {
+            brickAnimation = ImageIO.read(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for(int i = 0; i < 4; i++){
+            brickFrames[i] = brickAnimation.getSubimage(i*105, 0, 105, 105);
+        }
+        BufferedImage[] loadedImages = loader.getBrickFrames();
+        for (int i = 0; i < 4; i++) {
+            assertTrue(CompareImages.compareImages(brickFrames[i], loadedImages[i]));
+        }
+    }
 }
 
