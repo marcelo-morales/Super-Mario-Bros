@@ -19,7 +19,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class to test the UIManager class.
- * Goal to achieve branch coverage.
+ *
+ * Blackbox testing not utilized because it is difficult to assume behavior by method signature.
+ * Whitebox testing for each method, aim to achieve branch coverage.
+ * Interaction testing to see if all the private methods were called correctly, adding onto branch coverage.
+ * Mutation testing, aim to achieve maximum mutation coverage.
  *
  * Notes:
  *      For this test, most of the operations were using private methods, which we cannot access and use Mockito to
