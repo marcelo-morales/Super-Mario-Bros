@@ -25,6 +25,15 @@ test {
     ignoreFailures = true
 }
 
+pitest {
+    junit5PluginVersion = '0.12'
+    targetClasses = ['model.*']  //by default "${project.group}.*"
+    targetTests = ['UnitTestModelPackage.*']
+    threads = 4
+    outputFormats = ['XML', 'HTML']
+    timestampedReports = false
+}
+
 jacocoTestReport {
     dependsOn test
     reports {

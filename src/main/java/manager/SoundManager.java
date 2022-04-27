@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 public class SoundManager {
 
-    private Clip background;
+    public Clip background;
     private long clipTime = 0;
 
     public SoundManager() {

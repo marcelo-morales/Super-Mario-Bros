@@ -37,7 +37,6 @@ public class MapManager {
     }
 
     public boolean createMap(ImageLoader loader, String path) {
-        System.out.println("this is a path " + path);
         MapCreator mapCreator = new MapCreator(loader);
         map = mapCreator.createMap("/maps/" + path, 400);
 
@@ -113,6 +112,12 @@ public class MapManager {
         ArrayList<Brick> bricks = map.getAllBricks();
         ArrayList<Enemy> enemies = map.getEnemies();
         ArrayList<GameObject> toBeRemoved = new ArrayList<>();
+
+        System.out.println("size of bricks " + bricks.size());
+        System.out.println("size of enemices " + enemies.size());
+        //System.out.println("size of game objects " + toBeRemoved.size());
+
+
 
         Rectangle marioBottomBounds = mario.getBottomBounds();
 
