@@ -7,6 +7,10 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Test class to test the StartScreenSelection enum class.
  *
+ * Blackbox testing not utilized because it is not possible to assume behavior of enum class.
+ * Whitebox testing for each method, aim to achieve branch coverage.
+ * Mutation testing, aim to achieve maximum mutation coverage.
+ *
  * Notes:
  *      not possible to achieve branch coverage in the select() method.
  *      line 24 logical condition never evaluates to false because there are no enumerations with integer values
