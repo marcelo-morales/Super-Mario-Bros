@@ -12,8 +12,11 @@ import java.io.File;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Whitebox testing to test the MapSelection class.
- * Goal to achieve branch coverage.
+ * Test class to test the MapSelection class.
+ *
+ * Blackbox testing not utilized because it is difficult to assume behavior with method signature.
+ * Whitebox testing for each method, aim to achieve branch coverage.
+ * Mutation testing, aim to achieve maximum mutation coverage.
  *
  * Notes:
  *      cannot achieve branch coverage in createItems() method.
