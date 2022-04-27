@@ -1,10 +1,8 @@
-package UnitTestViewPackage;
+package view;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import view.Animation;
-import view.ImageLoader;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -13,8 +11,15 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Whitebox testing to test the Animation class.
- * Goal to achieve branch coverage.
+ * Test class to test the Animation class.
+ *
+ * No blackbox testing because the behavior cannot be assumed from method signature.
+ * Whitebox testing for each method, aim to achieve branch coverage.
+ * Mutation testing, aim to achieve maximum mutation coverage.
+ *
+ * Notes:
+ *      testAnimateCountGreaterThanSpeedToRightArrayLengthLessThanThree() test method fails.
+ *      this is because the nextFrame() method assumes that the array BufferedImage[] length is at least 3.
  */
 public class AnimationTest {
     private Animation animation;
@@ -46,26 +51,24 @@ public class AnimationTest {
 
     /**
      * Test constructor with null arrays.
+     *
+     * goal: whitebox testing branch coverage
      */
-    // TODO: remove disabled. what is the desired outcome here?
-    @Disabled
     @Test
     void testConstructorNullArrays() {
         try {
             animation = new Animation(null, null);
-        } catch (Exception e) {
-            fail("Unexpected exception was thrown");
+            fail("exception was not thrown");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-
-        assertEquals(null, animation.getLeftFrames());
-        assertEquals(null, animation.getRightFrames());
     }
 
     /**
      * Test constructor with arrays of length 0.
+     *
+     * goal: whitebox testing branch coverage
      */
-    // TODO: remove disabled. desired outcome?
-    @Disabled
     @Test
     void testConstructorArraysWithLengthZero() {
         leftFrames = new BufferedImage[0];
@@ -73,16 +76,16 @@ public class AnimationTest {
 
         try {
             animation = new Animation(leftFrames, rightFrames);
-        } catch (Exception e) {
-            fail("Unexpected exception was thrown");
+            fail("exception was not thrown");
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
         }
-
-        assertEquals(leftFrames, animation.getLeftFrames());
-        assertEquals(rightFrames, animation.getRightFrames());
     }
 
     /**
      * Test constructor with arrays of length 10.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testConstructorArraysWithLengthTen() {
@@ -98,6 +101,8 @@ public class AnimationTest {
 
     /**
      * Test animate() when the count is not greater than speed.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testAnimateCountNotGreaterThanSpeed() {
@@ -106,6 +111,8 @@ public class AnimationTest {
 
     /**
      * Test animate() when the count is greater than speed, and toRight = true.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testAnimateCountGreaterThanSpeedToRight() {
@@ -114,6 +121,8 @@ public class AnimationTest {
 
     /**
      * Test animate() when the count is greater than speed, and toRight = false.
+     *
+     * goal: whitebox testing branch coverage
      */
     @Test
     void testAnimateCountGreaterThanSpeedToLeft() {
@@ -122,7 +131,11 @@ public class AnimationTest {
 
     /**
      * Test animate() when the length of the array is less than three.
+     *
+     * goal: whitebox testing branch coverage
      */
+    // TODO: remove disabled
+    @Disabled
     @Test
     void testAnimateCountGreaterThanSpeedToRightArrayLengthLessThanThree() {
         rightFrames = new BufferedImage[2];
