@@ -5,6 +5,8 @@ import manager.GameEngine;
 import model.brick.GroundBrick;
 import model.brick.OrdinaryBrick;
 import model.brick.SurpriseBrick;
+import model.prize.Coin;
+import model.prize.Prize;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import view.ImageLoader;
@@ -102,10 +104,9 @@ public class TestBrick {
     }
 
     /**
-     * test helper method updateLocation.
-     * Branch 1: if not jumping and not falling.
-     * This is the only state that bricks should be in
-     * in the game.
+     * test that all fields of an OrdinaryBrick are appropriately
+     * updated after calling the updateLocation method.
+     * Bricks are never jumping or falling.
      */
     @Test
     public void testOrdinaryBrickUpdateLocation00() {
@@ -141,19 +142,62 @@ public class TestBrick {
     }
 
     /**
-     * Might be better for interaction-based testing,
-     * because function primarily only changes given
-     * game engine object.
-     * Have to run main to get GameEngine object,
-     * opportunity for mock-testing?
+     * test that all fields of a SurpriseBrick are appropriately
+     * updated after calling the reveal method.
+     * Branch 1, where mario is super, so reveal should
+     * update brick location, so brick location should be updated.
      */
     @Test
     public void testSurpriseBrickReveal() {
+        GameEngine engine = new GameEngine();
 
+        BufferedImage oldStyle = engine.getImageLoader().loadImage("/sprite.png");
+        oldStyle = engine.getImageLoader().getSubImage(oldStyle, 2, 1, 48, 48);
+        BufferedImage newStyle = engine.getImageLoader().loadImage("/sprite.png");
+        newStyle = engine.getImageLoader().getSubImage(newStyle, 1, 2, 48, 48);
+        BufferedImage coinStyle = engine.getImageLoader().loadImage("/sprite.png");
+        coinStyle = engine.getImageLoader().getSubImage(coinStyle, 1, 5, 48, 48);
+        Prize prize = new Coin(50, 50, coinStyle, 1);
+
+        surp = new SurpriseBrick(50, 50, oldStyle, prize);
+        assert(surp.getX() == 50);
+        assert(surp.getY() == 50);
+
+        Prize returned = surp.reveal(engine);
+
+        //assert that brick is now empty
+        assert(surp.isEmpty());
+        //assert that newStyle matches surp's style
+        assert(newStyle.equals(surp.getStyle()));
+        //assert that prize is returned
+        assert(returned.equals(prize));
     }
 
+    /**
+     * test that all fields of an SurpriseBrick are appropriately
+     * updated after calling the updateLocation method.
+     * Bricks are never jumping or falling.
+     */
     @Test
     public void testSurpriseBrickUpdateLocation() {
+        ImageLoader imageLoader = new ImageLoader();
 
+        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
+        BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
+
+        ord = new OrdinaryBrick(50, 50, brickStyle);
+        ord.setJumping(false);
+        ord.setFalling(false);
+        ord.setVelY(0);
+        ord.setVelX(0);
+
+        ord.updateLocation();
+
+        assert(!ord.isJumping());
+        assert(!ord.isFalling());
+        assert(ord.getY() == 50);
+        assert(ord.getVelY() == 0);
+        assert(ord.getVelX() == 0);
+        assert(ord.getX() == 50);
     }
 }
