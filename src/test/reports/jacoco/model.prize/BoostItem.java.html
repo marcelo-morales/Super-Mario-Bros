@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BoostItem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Super-Mario-Bros</a> &gt; <a href="index.source.html" class="el_package">model.prize</a> &gt; <span class="el_source">BoostItem.java</span></div><h1>BoostItem.java</h1><pre class="source lang-java linenums">package model.prize;
+
+import manager.GameEngine;
+import manager.MapManager;
+import model.GameObject;
+import model.hero.Mario;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+public abstract class BoostItem extends GameObject implements Prize{
+
+<span class="fc" id="L13">    private boolean revealed = false;</span>
+    private int point;
+
+    public BoostItem(double x, double y, BufferedImage style) {
+<span class="fc" id="L17">        super(x, y, style);</span>
+<span class="fc" id="L18">        setDimension(48, 48);</span>
+<span class="fc" id="L19">    }</span>
+
+    public abstract void onTouch(Mario mario, GameEngine engine);
+
+    @Override
+    public int getPoint() {
+<span class="nc" id="L25">        return point;</span>
+    }
+
+    @Override
+    public void updateLocation(){
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if(revealed){</span>
+<span class="nc" id="L31">            super.updateLocation();</span>
+        }
+<span class="nc" id="L33">    }</span>
+
+    @Override
+    public void draw(Graphics g){
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        if(revealed){</span>
+<span class="nc" id="L38">            g.drawImage(getStyle(), (int)getX(), (int)getY(), null);</span>
+        }
+<span class="nc" id="L40">    }</span>
+
+    @Override
+    public void reveal(){
+<span class="nc" id="L44">        setY(getY()-48);</span>
+<span class="nc" id="L45">        revealed = true;</span>
+<span class="nc" id="L46">    }</span>
+
+    public void setPoint(int point) {
+<span class="fc" id="L49">        this.point = point;</span>
+<span class="fc" id="L50">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

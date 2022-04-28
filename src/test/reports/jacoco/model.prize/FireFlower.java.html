@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FireFlower.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Super-Mario-Bros</a> &gt; <a href="index.source.html" class="el_package">model.prize</a> &gt; <span class="el_source">FireFlower.java</span></div><h1>FireFlower.java</h1><pre class="source lang-java linenums">package model.prize;
+
+import manager.GameEngine;
+import model.hero.Mario;
+import model.hero.MarioForm;
+import view.Animation;
+import view.ImageLoader;
+
+import java.awt.image.BufferedImage;
+
+public class FireFlower extends BoostItem {
+
+    public FireFlower(double x, double y, BufferedImage style) {
+<span class="fc" id="L14">        super(x, y, style);</span>
+<span class="fc" id="L15">        setPoint(150);</span>
+<span class="fc" id="L16">    }</span>
+
+    @Override
+    public void onTouch(Mario mario, GameEngine engine) {
+<span class="nc" id="L20">        mario.acquirePoints(getPoint());</span>
+
+<span class="nc" id="L22">        ImageLoader imageLoader = new ImageLoader();</span>
+
+<span class="nc bnc" id="L24" title="All 2 branches missed.">        if(!mario.getMarioForm().isFire()){</span>
+<span class="nc" id="L25">            BufferedImage[] leftFrames = imageLoader.getLeftFrames(MarioForm.FIRE);</span>
+<span class="nc" id="L26">            BufferedImage[] rightFrames = imageLoader.getRightFrames(MarioForm.FIRE);</span>
+
+<span class="nc" id="L28">            Animation animation = new Animation(leftFrames, rightFrames);</span>
+<span class="nc" id="L29">            MarioForm newForm = new MarioForm(animation, true, true);</span>
+<span class="nc" id="L30">            mario.setMarioForm(newForm);</span>
+<span class="nc" id="L31">            mario.setDimension(48, 96);</span>
+
+<span class="nc" id="L33">            engine.playFireFlower();</span>
+        }
+<span class="nc" id="L35">    }</span>
+
+    @Override
+<span class="nc" id="L38">    public void updateLocation(){}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

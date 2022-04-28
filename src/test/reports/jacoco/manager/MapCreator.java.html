@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MapCreator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Super-Mario-Bros</a> &gt; <a href="index.source.html" class="el_package">manager</a> &gt; <span class="el_source">MapCreator.java</span></div><h1>MapCreator.java</h1><pre class="source lang-java linenums">package manager;
+
+import model.EndFlag;
+import model.brick.*;
+import model.prize.*;
+import view.ImageLoader;
+import model.Map;
+import model.enemy.Enemy;
+import model.enemy.Goomba;
+import model.enemy.KoopaTroopa;
+import model.hero.Mario;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+class MapCreator {
+
+    private ImageLoader imageLoader;
+
+    private BufferedImage backgroundImage;
+    private BufferedImage superMushroom, oneUpMushroom, fireFlower, coin;
+    private BufferedImage ordinaryBrick, surpriseBrick, groundBrick, pipe;
+    private BufferedImage goombaLeft, goombaRight, koopaLeft, koopaRight, endFlag;
+
+
+<span class="fc" id="L26">    MapCreator(ImageLoader imageLoader) {</span>
+
+<span class="fc" id="L28">        this.imageLoader = imageLoader;</span>
+<span class="fc" id="L29">        BufferedImage sprite = imageLoader.loadImage(&quot;/sprite.png&quot;);</span>
+
+<span class="fc" id="L31">        this.backgroundImage = imageLoader.loadImage(&quot;/background.png&quot;);</span>
+<span class="fc" id="L32">        this.superMushroom = imageLoader.getSubImage(sprite, 2, 5, 48, 48);</span>
+<span class="fc" id="L33">        this.oneUpMushroom= imageLoader.getSubImage(sprite, 3, 5, 48, 48);</span>
+<span class="fc" id="L34">        this.fireFlower= imageLoader.getSubImage(sprite, 4, 5, 48, 48);</span>
+<span class="fc" id="L35">        this.coin = imageLoader.getSubImage(sprite, 1, 5, 48, 48);</span>
+<span class="fc" id="L36">        this.ordinaryBrick = imageLoader.getSubImage(sprite, 1, 1, 48, 48);</span>
+<span class="fc" id="L37">        this.surpriseBrick = imageLoader.getSubImage(sprite, 2, 1, 48, 48);</span>
+<span class="fc" id="L38">        this.groundBrick = imageLoader.getSubImage(sprite, 2, 2, 48, 48);</span>
+<span class="fc" id="L39">        this.pipe = imageLoader.getSubImage(sprite, 3, 1, 96, 96);</span>
+<span class="fc" id="L40">        this.goombaLeft = imageLoader.getSubImage(sprite, 2, 4, 48, 48);</span>
+<span class="fc" id="L41">        this.goombaRight = imageLoader.getSubImage(sprite, 5, 4, 48, 48);</span>
+<span class="fc" id="L42">        this.koopaLeft = imageLoader.getSubImage(sprite, 1, 3, 48, 64);</span>
+<span class="fc" id="L43">        this.koopaRight = imageLoader.getSubImage(sprite, 4, 3, 48, 64);</span>
+<span class="fc" id="L44">        this.endFlag = imageLoader.getSubImage(sprite, 5, 1, 48, 48);</span>
+
+<span class="fc" id="L46">    }</span>
+
+    Map createMap(String mapPath, double timeLimit) {
+<span class="fc" id="L49">        BufferedImage mapImage = imageLoader.loadImage(mapPath);</span>
+
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        if (mapImage == null) {</span>
+<span class="nc" id="L52">            System.out.println(&quot;Given path is invalid...&quot;);</span>
+<span class="nc" id="L53">            return null;</span>
+        }
+
+<span class="fc" id="L56">        Map createdMap = new Map(timeLimit, backgroundImage);</span>
+<span class="fc" id="L57">        String[] paths = mapPath.split(&quot;/&quot;);</span>
+<span class="fc" id="L58">        createdMap.setPath(paths[paths.length-1]);</span>
+
+<span class="fc" id="L60">        int pixelMultiplier = 48;</span>
+
+<span class="fc" id="L62">        int mario = new Color(160, 160, 160).getRGB();</span>
+<span class="fc" id="L63">        int ordinaryBrick = new Color(0, 0, 255).getRGB();</span>
+<span class="fc" id="L64">        int surpriseBrick = new Color(255, 255, 0).getRGB();</span>
+<span class="fc" id="L65">        int groundBrick = new Color(255, 0, 0).getRGB();</span>
+<span class="fc" id="L66">        int pipe = new Color(0, 255, 0).getRGB();</span>
+<span class="fc" id="L67">        int goomba = new Color(0, 255, 255).getRGB();</span>
+<span class="fc" id="L68">        int koopa = new Color(255, 0, 255).getRGB();</span>
+<span class="fc" id="L69">        int end = new Color(160, 0, 160).getRGB();</span>
+
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        for (int x = 0; x &lt; mapImage.getWidth(); x++) {</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">            for (int y = 0; y &lt; mapImage.getHeight(); y++) {</span>
+
+<span class="fc" id="L74">                int currentPixel = mapImage.getRGB(x, y);</span>
+<span class="fc" id="L75">                int xLocation = x*pixelMultiplier;</span>
+<span class="fc" id="L76">                int yLocation = y*pixelMultiplier;</span>
+
+<span class="fc bfc" id="L78" title="All 2 branches covered.">                if (currentPixel == ordinaryBrick) {</span>
+<span class="fc" id="L79">                    Brick brick = new OrdinaryBrick(xLocation, yLocation, this.ordinaryBrick);</span>
+<span class="fc" id="L80">                    createdMap.addBrick(brick);</span>
+<span class="fc" id="L81">                }</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">                else if (currentPixel == surpriseBrick) {</span>
+<span class="fc" id="L83">                    Prize prize = generateRandomPrize(xLocation, yLocation);</span>
+<span class="fc" id="L84">                    Brick brick = new SurpriseBrick(xLocation, yLocation, this.surpriseBrick, prize);</span>
+<span class="fc" id="L85">                    createdMap.addBrick(brick);</span>
+<span class="fc" id="L86">                }</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">                else if (currentPixel == pipe) {</span>
+<span class="fc" id="L88">                    Brick brick = new Pipe(xLocation, yLocation, this.pipe);</span>
+<span class="fc" id="L89">                    createdMap.addGroundBrick(brick);</span>
+<span class="fc" id="L90">                }</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">                else if (currentPixel == groundBrick) {</span>
+<span class="fc" id="L92">                    Brick brick = new GroundBrick(xLocation, yLocation, this.groundBrick);</span>
+<span class="fc" id="L93">                    createdMap.addGroundBrick(brick);</span>
+<span class="fc" id="L94">                }</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">                else if (currentPixel == goomba) {</span>
+<span class="fc" id="L96">                    Enemy enemy = new Goomba(xLocation, yLocation, this.goombaLeft);</span>
+<span class="fc" id="L97">                    ((Goomba)enemy).setRightImage(goombaRight);</span>
+<span class="fc" id="L98">                    createdMap.addEnemy(enemy);</span>
+<span class="fc" id="L99">                }</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">                else if (currentPixel == koopa) {</span>
+<span class="fc" id="L101">                    Enemy enemy = new KoopaTroopa(xLocation, yLocation, this.koopaLeft);</span>
+<span class="fc" id="L102">                    ((KoopaTroopa)enemy).setRightImage(koopaRight);</span>
+<span class="fc" id="L103">                    createdMap.addEnemy(enemy);</span>
+<span class="fc" id="L104">                }</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">                else if (currentPixel == mario) {</span>
+<span class="fc" id="L106">                    Mario marioObject = new Mario(xLocation, yLocation);</span>
+<span class="fc" id="L107">                    createdMap.setMario(marioObject);</span>
+<span class="fc" id="L108">                }</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">                else if(currentPixel == end){</span>
+<span class="fc" id="L110">                    EndFlag endPoint= new EndFlag(xLocation+24, yLocation, endFlag);</span>
+<span class="fc" id="L111">                    createdMap.setEndPoint(endPoint);</span>
+                }
+            }
+        }
+
+<span class="fc" id="L116">        System.out.println(&quot;Map is created..&quot;);</span>
+<span class="fc" id="L117">        return createdMap;</span>
+    }
+
+    private Prize generateRandomPrize(double x, double y){
+        Prize generated;
+<span class="fc" id="L122">        int random = (int)(Math.random() * 12);</span>
+
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        if(random == 0){ //super mushroom</span>
+<span class="fc" id="L125">            generated = new SuperMushroom(x, y, this.superMushroom);</span>
+        }
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        else if(random == 1){ //fire flower</span>
+<span class="fc" id="L128">            generated = new FireFlower(x, y, this.fireFlower);</span>
+        }
+<span class="fc bfc" id="L130" title="All 2 branches covered.">        else if(random == 2){ //one up mushroom</span>
+<span class="fc" id="L131">            generated = new OneUpMushroom(x, y, this.oneUpMushroom);</span>
+        }
+        else{ //coin
+<span class="fc" id="L134">            generated = new Coin(x, y, this.coin, 50);</span>
+        }
+
+<span class="fc" id="L137">        return generated;</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

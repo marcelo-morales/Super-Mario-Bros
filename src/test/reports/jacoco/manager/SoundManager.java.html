@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SoundManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Super-Mario-Bros</a> &gt; <a href="index.source.html" class="el_package">manager</a> &gt; <span class="el_source">SoundManager.java</span></div><h1>SoundManager.java</h1><pre class="source lang-java linenums">package manager;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+
+public class SoundManager {
+
+    public Clip background;
+<span class="fc" id="L12">    private long clipTime = 0;</span>
+
+<span class="fc" id="L14">    public SoundManager() {</span>
+<span class="fc" id="L15">        background = getClip(loadAudio(&quot;background&quot;));</span>
+<span class="fc" id="L16">    }</span>
+
+    private AudioInputStream loadAudio(String url) {
+        try {
+<span class="fc" id="L20">            InputStream audioSrc = getClass().getResourceAsStream(&quot;/media/audio/&quot; + url + &quot;.wav&quot;);</span>
+<span class="fc" id="L21">            InputStream bufferedIn = new BufferedInputStream(audioSrc);</span>
+<span class="fc" id="L22">            return AudioSystem.getAudioInputStream(bufferedIn);</span>
+
+<span class="nc" id="L24">        } catch (Exception e) {</span>
+<span class="nc" id="L25">            System.err.println(e.getMessage());</span>
+        }
+
+<span class="nc" id="L28">        return null;</span>
+    }
+
+    private Clip getClip(AudioInputStream stream) {
+        try {
+<span class="fc" id="L33">            Clip clip = AudioSystem.getClip();</span>
+<span class="fc" id="L34">            clip.open(stream);</span>
+<span class="fc" id="L35">            return clip;</span>
+<span class="nc" id="L36">        } catch (Exception e) {</span>
+<span class="nc" id="L37">            e.printStackTrace();</span>
+        }
+
+<span class="nc" id="L40">        return null;</span>
+    }
+
+    public void resumeBackground(){
+<span class="fc" id="L44">        background.setMicrosecondPosition(clipTime);</span>
+<span class="fc" id="L45">        background.start();</span>
+<span class="fc" id="L46">    }</span>
+
+    public void pauseBackground(){
+<span class="fc" id="L49">        clipTime = background.getMicrosecondPosition();</span>
+<span class="fc" id="L50">        background.stop();</span>
+<span class="fc" id="L51">    }</span>
+
+    public void restartBackground() {
+<span class="fc" id="L54">        clipTime = 0;</span>
+<span class="fc" id="L55">        resumeBackground();</span>
+<span class="fc" id="L56">    }</span>
+
+    public void playJump() {
+<span class="fc" id="L59">        Clip clip = getClip(loadAudio(&quot;jump&quot;));</span>
+<span class="fc" id="L60">        clip.start();</span>
+
+<span class="fc" id="L62">    }</span>
+
+    public void playCoin() {
+<span class="fc" id="L65">        Clip clip = getClip(loadAudio(&quot;coin&quot;));</span>
+<span class="fc" id="L66">        clip.start();</span>
+
+<span class="fc" id="L68">    }</span>
+
+    public void playFireball() {
+<span class="fc" id="L71">        Clip clip = getClip(loadAudio(&quot;fireball&quot;));</span>
+<span class="fc" id="L72">        clip.start();</span>
+
+<span class="fc" id="L74">    }</span>
+
+    public void playGameOver() {
+<span class="fc" id="L77">        Clip clip = getClip(loadAudio(&quot;gameOver&quot;));</span>
+<span class="fc" id="L78">        clip.start();</span>
+
+<span class="fc" id="L80">    }</span>
+
+    public void playStomp() {
+<span class="fc" id="L83">        Clip clip = getClip(loadAudio(&quot;stomp&quot;));</span>
+<span class="fc" id="L84">        clip.start();</span>
+
+<span class="fc" id="L86">    }</span>
+
+    public void playOneUp() {
+<span class="fc" id="L89">        Clip clip = getClip(loadAudio(&quot;oneUp&quot;));</span>
+<span class="fc" id="L90">        clip.start();</span>
+
+<span class="fc" id="L92">    }</span>
+
+    public void playSuperMushroom() {
+
+<span class="fc" id="L96">        Clip clip = getClip(loadAudio(&quot;superMushroom&quot;));</span>
+<span class="fc" id="L97">        clip.start();</span>
+
+<span class="fc" id="L99">    }</span>
+
+    public void playMarioDies() {
+
+<span class="fc" id="L103">        Clip clip = getClip(loadAudio(&quot;marioDies&quot;));</span>
+<span class="fc" id="L104">        clip.start();</span>
+
+<span class="fc" id="L106">    }</span>
+
+    public void playFireFlower() {
+
+<span class="fc" id="L110">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

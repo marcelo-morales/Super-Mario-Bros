@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameEngine.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Super-Mario-Bros</a> &gt; <a href="index.source.html" class="el_package">manager</a> &gt; <span class="el_source">GameEngine.java</span></div><h1>GameEngine.java</h1><pre class="source lang-java linenums">package manager;
+
+import model.hero.Mario;
+import view.ImageLoader;
+import view.StartScreenSelection;
+import view.UIManager;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class GameEngine implements Runnable {
+
+    private final static int WIDTH = 1268, HEIGHT = 708;
+
+    private MapManager mapManager;
+    private UIManager uiManager;
+    private SoundManager soundManager;
+    private GameStatus gameStatus;
+    private boolean isRunning;
+    private Camera camera;
+    private ImageLoader imageLoader;
+    private Thread thread;
+<span class="fc" id="L23">    public StartScreenSelection startScreenSelection = StartScreenSelection.START_GAME;</span>
+<span class="fc" id="L24">    private int selectedMap = 0;</span>
+
+<span class="fc" id="L26">    public GameEngine() {</span>
+<span class="fc" id="L27">        init();</span>
+<span class="fc" id="L28">    }</span>
+
+    private void init() {
+<span class="fc" id="L31">        imageLoader = new ImageLoader();</span>
+<span class="fc" id="L32">        InputManager inputManager = new InputManager(this);</span>
+<span class="fc" id="L33">        gameStatus = GameStatus.START_SCREEN;</span>
+<span class="fc" id="L34">        camera = new Camera();</span>
+<span class="fc" id="L35">        uiManager = new UIManager(this, WIDTH, HEIGHT);</span>
+<span class="fc" id="L36">        soundManager = new SoundManager();</span>
+<span class="fc" id="L37">        mapManager = new MapManager();</span>
+
+<span class="fc" id="L39">        JFrame frame = new JFrame(&quot;Super Mario Bros.&quot;);</span>
+<span class="fc" id="L40">        frame.add(uiManager);</span>
+<span class="fc" id="L41">        frame.addKeyListener(inputManager);</span>
+<span class="fc" id="L42">        frame.addMouseListener(inputManager);</span>
+<span class="fc" id="L43">        frame.pack();</span>
+<span class="fc" id="L44">        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);</span>
+<span class="fc" id="L45">        frame.setResizable(false);</span>
+<span class="fc" id="L46">        frame.setLocationRelativeTo(null);</span>
+<span class="fc" id="L47">        frame.setVisible(true);</span>
+
+<span class="fc" id="L49">        start();</span>
+<span class="fc" id="L50">    }</span>
+
+    private synchronized void start() {
+
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (isRunning)</span>
+<span class="nc" id="L55">            return;</span>
+
+<span class="fc" id="L57">        isRunning = true;</span>
+<span class="fc" id="L58">        thread = new Thread(this);</span>
+<span class="fc" id="L59">        thread.start();</span>
+<span class="fc" id="L60">    }</span>
+
+    private void reset(){
+<span class="fc" id="L63">        resetCamera();</span>
+<span class="fc" id="L64">        setGameStatus(GameStatus.START_SCREEN);</span>
+<span class="fc" id="L65">    }</span>
+
+    public void resetCamera(){
+<span class="fc" id="L68">        camera = new Camera();</span>
+<span class="fc" id="L69">        soundManager.restartBackground();</span>
+<span class="fc" id="L70">    }</span>
+
+    public void selectMapViaMouse() {
+<span class="nc" id="L73">        String path = uiManager.selectMapViaMouse(uiManager.getMousePosition());</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (path != null) {</span>
+<span class="nc" id="L75">            createMap(path);</span>
+        }
+<span class="nc" id="L77">    }</span>
+
+    public void selectMapViaKeyboard(){
+<span class="fc" id="L80">        String path = uiManager.selectMapViaKeyboard(selectedMap);</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        if (path != null) {</span>
+<span class="fc" id="L82">            createMap(path);</span>
+        }
+<span class="fc" id="L84">    }</span>
+
+    public void changeSelectedMap(boolean up){
+<span class="fc" id="L87">        selectedMap = uiManager.changeSelectedMap(selectedMap, up);</span>
+<span class="fc" id="L88">    }</span>
+
+    public void createMap(String path) {
+        //System.out.println(&quot;this is imageLoader &quot; + imageLoader.toString());
+<span class="fc" id="L92">        boolean loaded = mapManager.createMap(imageLoader, path);</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if(loaded){</span>
+<span class="fc" id="L94">            setGameStatus(GameStatus.RUNNING);</span>
+<span class="fc" id="L95">            soundManager.restartBackground();</span>
+        }
+
+        else
+<span class="nc" id="L99">            setGameStatus(GameStatus.START_SCREEN);</span>
+<span class="fc" id="L100">    }</span>
+
+    @Override
+    public void run() {
+<span class="fc" id="L104">        long lastTime = System.nanoTime();</span>
+<span class="fc" id="L105">        double amountOfTicks = 60.0;</span>
+<span class="fc" id="L106">        double ns = 1000000000 / amountOfTicks;</span>
+<span class="fc" id="L107">        double delta = 0;</span>
+<span class="fc" id="L108">        long timer = System.currentTimeMillis();</span>
+
+<span class="pc bpc" id="L110" title="2 of 4 branches missed.">        while (isRunning &amp;&amp; !thread.isInterrupted()) {</span>
+
+<span class="fc" id="L112">            long now = System.nanoTime();</span>
+<span class="fc" id="L113">            delta += (now - lastTime) / ns;</span>
+<span class="fc" id="L114">            lastTime = now;</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">            while (delta &gt;= 1) {</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">                if (gameStatus == GameStatus.RUNNING) {</span>
+<span class="fc" id="L117">                    gameLoop();</span>
+                }
+<span class="fc" id="L119">                delta--;</span>
+            }
+<span class="fc" id="L121">            render();</span>
+
+<span class="fc bfc" id="L123" title="All 2 branches covered.">            if(gameStatus != GameStatus.RUNNING) {</span>
+<span class="fc" id="L124">                timer = System.currentTimeMillis();</span>
+            }
+
+<span class="fc bfc" id="L127" title="All 2 branches covered.">            if (System.currentTimeMillis() - timer &gt; 1000) {</span>
+<span class="fc" id="L128">                timer += 1000;</span>
+<span class="fc" id="L129">                mapManager.updateTime();</span>
+            }
+<span class="fc" id="L131">        }</span>
+<span class="nc" id="L132">    }</span>
+
+    private void render() {
+<span class="fc" id="L135">        uiManager.repaint();</span>
+<span class="fc" id="L136">    }</span>
+
+    private void gameLoop() {
+<span class="fc" id="L139">        updateLocations();</span>
+<span class="fc" id="L140">        checkCollisions();</span>
+<span class="fc" id="L141">        updateCamera();</span>
+
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">        if (isGameOver()) {</span>
+<span class="nc" id="L144">            setGameStatus(GameStatus.GAME_OVER);</span>
+        }
+
+<span class="fc" id="L147">        int missionPassed = passMission();</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">        if(missionPassed &gt; -1){</span>
+<span class="nc" id="L149">            mapManager.acquirePoints(missionPassed);</span>
+            //setGameStatus(GameStatus.MISSION_PASSED);
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        } else if(mapManager.endLevel())</span>
+<span class="nc" id="L152">            setGameStatus(GameStatus.MISSION_PASSED);</span>
+<span class="fc" id="L153">    }</span>
+
+    private void updateCamera() {
+<span class="fc" id="L156">        Mario mario = mapManager.getMario();</span>
+<span class="fc" id="L157">        double marioVelocityX = mario.getVelX();</span>
+<span class="fc" id="L158">        double shiftAmount = 0;</span>
+
+<span class="pc bpc" id="L160" title="3 of 4 branches missed.">        if (marioVelocityX &gt; 0 &amp;&amp; mario.getX() - 600 &gt; camera.getX()) {</span>
+<span class="nc" id="L161">            shiftAmount = marioVelocityX;</span>
+        }
+
+<span class="fc" id="L164">        camera.moveCam(shiftAmount, 0);</span>
+<span class="fc" id="L165">    }</span>
+
+    private void updateLocations() {
+<span class="fc" id="L168">        mapManager.updateLocations();</span>
+<span class="fc" id="L169">    }</span>
+
+    private void checkCollisions() {
+<span class="fc" id="L172">        mapManager.checkCollisions(this);</span>
+<span class="fc" id="L173">    }</span>
+
+    public void receiveInput(ButtonAction input) {
+
+<span class="fc bfc" id="L177" title="All 2 branches covered.">        if (gameStatus == GameStatus.START_SCREEN) {</span>
+<span class="fc bfc" id="L178" title="All 4 branches covered.">            if (input == ButtonAction.SELECT &amp;&amp; startScreenSelection == StartScreenSelection.START_GAME) {</span>
+<span class="fc" id="L179">                startGame();</span>
+<span class="pc bpc" id="L180" title="1 of 4 branches missed.">            } else if (input == ButtonAction.SELECT &amp;&amp; startScreenSelection == StartScreenSelection.VIEW_ABOUT) {</span>
+<span class="nc" id="L181">                setGameStatus(GameStatus.ABOUT_SCREEN);</span>
+<span class="pc bpc" id="L182" title="1 of 4 branches missed.">            } else if (input == ButtonAction.SELECT &amp;&amp; startScreenSelection == StartScreenSelection.VIEW_HELP) {</span>
+<span class="fc" id="L183">                setGameStatus(GameStatus.HELP_SCREEN);</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">            } else if (input == ButtonAction.GO_UP) {</span>
+<span class="fc" id="L185">                selectOption(true);</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">            } else if (input == ButtonAction.GO_DOWN) {</span>
+<span class="fc" id="L187">                selectOption(false);</span>
+            }
+        }
+<span class="fc bfc" id="L190" title="All 2 branches covered.">        else if(gameStatus == GameStatus.MAP_SELECTION){</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">            if(input == ButtonAction.SELECT){</span>
+<span class="fc" id="L192">                selectMapViaKeyboard();</span>
+            }
+<span class="fc bfc" id="L194" title="All 2 branches covered.">            else if(input == ButtonAction.GO_UP){</span>
+<span class="fc" id="L195">                changeSelectedMap(true);</span>
+            }
+<span class="fc bfc" id="L197" title="All 2 branches covered.">            else if(input == ButtonAction.GO_DOWN){</span>
+<span class="fc" id="L198">                changeSelectedMap(false);</span>
+            }
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        } else if (gameStatus == GameStatus.RUNNING) {</span>
+<span class="fc" id="L201">            Mario mario = mapManager.getMario();</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">            if (input == ButtonAction.JUMP) {</span>
+<span class="fc" id="L203">                mario.jump(this);</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">            } else if (input == ButtonAction.M_RIGHT) {</span>
+<span class="fc" id="L205">                System.out.println(&quot;i am here 3&quot;);</span>
+<span class="fc" id="L206">                mario.move(true, camera);</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">            } else if (input == ButtonAction.M_LEFT) {</span>
+<span class="fc" id="L208">                mario.move(false, camera);</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">            } else if (input == ButtonAction.ACTION_COMPLETED) {</span>
+<span class="fc" id="L210">                mario.setVelX(0);</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">            } else if (input == ButtonAction.FIRE) {</span>
+<span class="fc" id="L212">                mapManager.fire(this);</span>
+<span class="pc bpc" id="L213" title="1 of 2 branches missed.">            } else if (input == ButtonAction.PAUSE_RESUME) {</span>
+<span class="fc" id="L214">                pauseGame();</span>
+            }
+<span class="fc bfc" id="L216" title="All 2 branches covered.">        } else if (gameStatus == GameStatus.PAUSED) {</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">            if (input == ButtonAction.PAUSE_RESUME) {</span>
+<span class="fc" id="L218">                pauseGame();</span>
+            }
+<span class="pc bpc" id="L220" title="1 of 4 branches missed.">        } else if(gameStatus == GameStatus.GAME_OVER &amp;&amp; input == ButtonAction.GO_TO_START_SCREEN){</span>
+<span class="fc" id="L221">            reset();</span>
+<span class="pc bpc" id="L222" title="2 of 4 branches missed.">        } else if(gameStatus == GameStatus.MISSION_PASSED &amp;&amp; input == ButtonAction.GO_TO_START_SCREEN){</span>
+<span class="fc" id="L223">            reset();</span>
+        }
+
+<span class="fc bfc" id="L226" title="All 2 branches covered.">        if(input == ButtonAction.GO_TO_START_SCREEN){</span>
+<span class="fc" id="L227">            setGameStatus(GameStatus.START_SCREEN);</span>
+        }
+<span class="fc" id="L229">    }</span>
+
+    private void selectOption(boolean selectUp) {
+<span class="fc" id="L232">        startScreenSelection = startScreenSelection.select(selectUp);</span>
+<span class="fc" id="L233">    }</span>
+
+    private void startGame() {
+<span class="pc bpc" id="L236" title="1 of 2 branches missed.">        if (gameStatus != GameStatus.GAME_OVER) {</span>
+<span class="fc" id="L237">            setGameStatus(GameStatus.MAP_SELECTION);</span>
+        }
+<span class="fc" id="L239">    }</span>
+
+    private void pauseGame() {
+<span class="fc bfc" id="L242" title="All 2 branches covered.">        if (gameStatus == GameStatus.RUNNING) {</span>
+<span class="fc" id="L243">            setGameStatus(GameStatus.PAUSED);</span>
+<span class="fc" id="L244">            soundManager.pauseBackground();</span>
+<span class="pc bpc" id="L245" title="1 of 2 branches missed.">        } else if (gameStatus == GameStatus.PAUSED) {</span>
+<span class="fc" id="L246">            setGameStatus(GameStatus.RUNNING);</span>
+<span class="fc" id="L247">            soundManager.resumeBackground();</span>
+        }
+<span class="fc" id="L249">    }</span>
+
+    public void shakeCamera(){
+<span class="fc" id="L252">        camera.shakeCamera();</span>
+<span class="fc" id="L253">    }</span>
+
+    private boolean isGameOver() {
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">        if(gameStatus == GameStatus.RUNNING)</span>
+<span class="fc" id="L257">            return mapManager.isGameOver();</span>
+<span class="nc" id="L258">        return false;</span>
+    }
+
+    public ImageLoader getImageLoader() {
+<span class="fc" id="L262">        return imageLoader;</span>
+    }
+
+    public GameStatus getGameStatus() {
+<span class="fc" id="L266">        return gameStatus;</span>
+    }
+
+    public StartScreenSelection getStartScreenSelection() {
+<span class="fc" id="L270">        return startScreenSelection;</span>
+    }
+
+    public void setGameStatus(GameStatus gameStatus) {
+<span class="fc" id="L274">        this.gameStatus = gameStatus;</span>
+<span class="fc" id="L275">    }</span>
+
+    public int getScore() {
+<span class="fc" id="L278">        return mapManager.getScore();</span>
+    }
+
+    public int getRemainingLives() {
+<span class="fc" id="L282">        return mapManager.getRemainingLives();</span>
+    }
+
+    public int getCoins() {
+<span class="fc" id="L286">        return mapManager.getCoins();</span>
+    }
+
+    public int getSelectedMap() {
+<span class="fc" id="L290">        return selectedMap;</span>
+    }
+
+    public void drawMap(Graphics2D g2) {
+<span class="fc" id="L294">        mapManager.drawMap(g2);</span>
+<span class="fc" id="L295">    }</span>
+
+    public Point getCameraLocation() {
+<span class="fc" id="L298">        return new Point((int)camera.getX(), (int)camera.getY());</span>
+    }
+
+    private int passMission(){
+<span class="fc" id="L302">        return mapManager.passMission();</span>
+    }
+
+    public void playCoin() {
+<span class="fc" id="L306">        soundManager.playCoin();</span>
+<span class="fc" id="L307">    }</span>
+
+    public void playOneUp() {
+<span class="fc" id="L310">        soundManager.playOneUp();</span>
+<span class="fc" id="L311">    }</span>
+
+    public void playSuperMushroom() {
+<span class="fc" id="L314">        soundManager.playSuperMushroom();</span>
+<span class="fc" id="L315">    }</span>
+
+    public void playMarioDies() {
+<span class="fc" id="L318">        soundManager.playMarioDies();</span>
+<span class="fc" id="L319">    }</span>
+
+    public void playJump() {
+<span class="fc" id="L322">        soundManager.playJump();</span>
+<span class="fc" id="L323">    }</span>
+
+    public void playFireFlower() {
+<span class="fc" id="L326">        soundManager.playFireFlower();</span>
+<span class="fc" id="L327">    }</span>
+
+    public void playFireball() {
+<span class="fc" id="L330">        soundManager.playFireball();</span>
+<span class="fc" id="L331">    }</span>
+
+    public void playStomp() {
+<span class="fc" id="L334">        soundManager.playStomp();</span>
+<span class="fc" id="L335">    }</span>
+
+    public MapManager getMapManager() {
+<span class="fc" id="L338">        return mapManager;</span>
+    }
+
+    public static void main(String... args) {
+<span class="nc" id="L342">        new GameEngine();</span>
+<span class="nc" id="L343">    }</span>
+
+    public int getRemainingTime() {
+<span class="fc" id="L346">        return mapManager.getRemainingTime();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
