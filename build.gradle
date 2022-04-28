@@ -22,7 +22,13 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    excludes = [
+//            '**/*UnitTestManagerPackage*',
+//            '**/*UnitTestModelPackage*',
+//            '**/*view*'
+    ]
     ignoreFailures = true
+    finalizedBy jacocoTestReport
 }
 
 pitest {
@@ -41,5 +47,14 @@ jacocoTestReport {
         xml.enabled true
         csv.enabled true
         html.enabled true
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+//                    '**/*UnitTestManagerPackage*',
+//            '**/*UnitTestModelPackage*',
+//                    '**/*view*'
+            ])
+        }))
     }
 }
