@@ -54,6 +54,7 @@ public class MapManager {
     public void fire(GameEngine engine) {
         Fireball fireball = getMario().fire();
         if (fireball != null) {
+            System.out.println("going here to fire");
             map.addFireball(fireball);
             engine.playFireball();
         }
@@ -259,6 +260,7 @@ public class MapManager {
 
         for (Prize prize : prizes) {
             if (prize instanceof BoostItem) {
+                System.out.println("hello world");
                 BoostItem boost = (BoostItem) prize;
                 Rectangle prizeBottomBounds = boost.getBottomBounds();
                 Rectangle prizeRightBounds = boost.getRightBounds();
@@ -266,9 +268,13 @@ public class MapManager {
                 boost.setFalling(true);
 
                 for (Brick brick : bricks) {
+                    System.out.println("hello world 2");
+
                     Rectangle brickBounds;
 
                     if (boost.isFalling()) {
+                        System.out.println("hello world 3");
+
                         brickBounds = brick.getTopBounds();
 
                         if (brickBounds.intersects(prizeBottomBounds)) {
@@ -360,6 +366,7 @@ public class MapManager {
 
         for(GameObject object : list){
             if(object instanceof Fireball){
+                System.out.println("getting here pls");
                 map.removeFireball((Fireball)object);
             }
             else if(object instanceof Enemy){
