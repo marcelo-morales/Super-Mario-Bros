@@ -54,8 +54,6 @@ public class ImageLoaderTest {
      *
      * EP: String path - {null, not null invalid path, not null valid path}
      */
-    // TODO: remove disabled
-    @Disabled
     @Test
     void testLoadImageStringNullPath() {
         String path = null;
@@ -69,8 +67,6 @@ public class ImageLoaderTest {
      *
      * EP: String path - {null, not null invalid path, not null valid path}
      */
-    // TODO: remove disabled
-    @Disabled
     @Test
     void testLoadImageStringInvalidPath() {
         assertNull(loader.loadImage("test"));
@@ -96,8 +92,6 @@ public class ImageLoaderTest {
      *
      * EP: File file - {null, not null invalid file, not null valid file but not image, not null valid image}
      */
-    // TODO: remove disabled
-    @Disabled
     @Test
     void testLoadImageFileNullFile() {
         File file = null;
