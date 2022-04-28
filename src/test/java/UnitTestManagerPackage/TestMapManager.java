@@ -43,6 +43,37 @@ public class TestMapManager {
         mapManager = new MapManager();
     }
 
+    @Test
+    public void testLocationsNotUpdatedWhenMapIsNull() {
+        mapManager.updateLocations();
+        assertNull(mapManager.map);
+    }
+
+    @Test
+    public void testMapCreateFails() {
+        ImageLoader imageLoader = new ImageLoader();
+        assertFalse(mapManager.createMap(imageLoader, "/buggy_path"));
+    }
+
+
+    @Test
+    //fix this for branch coverage
+    public void testWhenMarioGettingFireNotNull() {
+        ImageLoader imageLoader = new ImageLoader();
+        mapManager.createMap(imageLoader, "/Map 1.png");
+
+        mapManager.getMario().getMarioForm().fire(true, 0, 0);
+
+        mapManager.fire(gameEngine);
+    }
+
+    @Test
+    public void testCheckCollisionsWithANullMap() {
+        mapManager.checkCollisions(gameEngine);
+        assertNull(mapManager);
+    }
+
+
     /*
     Test that a map has been created successfully with the image of Map 1.
      */
@@ -250,16 +281,20 @@ public class TestMapManager {
         OrdinaryBrick ordinaryBrick = new OrdinaryBrick(50, 50, brickStyle);
         mapManager.map.addBrick(ordinaryBrick);
 
+        ordinaryBrick.setLocation(0, 0);
+        firstCoin.setLocation(0, 0);
+
+
+
         mapManager.checkCollisions(gameEngine);
         assertNotNull(mapManager.map);
-
     }
 
     /*
      Test to check whether there are collisions with an initialized map.
      */
     @Test
-    public void testCheckCollisionsWithMapNotNull() {
+    public void testCheckCollisionsWithMapNotNullBrickVelPositive() {
         ImageLoader imageLoader = new ImageLoader();
         mapManager.createMap(imageLoader, "/Map 1.png");
 
@@ -267,14 +302,67 @@ public class TestMapManager {
         coinStyle = gameEngine.getImageLoader().getSubImage(coinStyle, 1, 5, 48, 48);
 
         FireFlower prize = new FireFlower(50, 50, coinStyle);
-        Coin coin = new Coin(0.5, 0.5, coinStyle , 5);
+        Coin coin = new Coin(50, 50, coinStyle , 5);
         mapManager.map.addRevealedPrize(prize);
         mapManager.map.addRevealedPrize(coin);
 
         BufferedImage sprite = imageLoader.loadImage("/sprite.png");
         BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
         OrdinaryBrick ordinaryBrick = new OrdinaryBrick(50, 50, brickStyle);
-        mapManager.map.addBrick(ordinaryBrick);
+        prize.setVelX(10);
+
+        mapManager.checkCollisions(gameEngine);
+        assertTrue(mapManager.map.getAllBricks().size() > 0);
+    }
+
+    /*
+    Test to check whether there are collisions with an initialized map.
+    */
+    @Test
+    public void testCheckCollisionsWithMapNotNullBrickVelNegative() {
+        ImageLoader imageLoader = new ImageLoader();
+        mapManager.createMap(imageLoader, "/Map 1.png");
+
+        BufferedImage coinStyle = gameEngine.getImageLoader().loadImage("/sprite.png");
+        coinStyle = gameEngine.getImageLoader().getSubImage(coinStyle, 1, 5, 48, 48);
+
+        FireFlower prize = new FireFlower(50, 50, coinStyle);
+        Coin coin = new Coin(50, 50, coinStyle , 5);
+        mapManager.map.addRevealedPrize(prize);
+        mapManager.map.addRevealedPrize(coin);
+
+        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
+        BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
+        OrdinaryBrick ordinaryBrick = new OrdinaryBrick(50, 50, brickStyle);
+        prize.setVelX(-10);
+
+        mapManager.checkCollisions(gameEngine);
+        assertTrue(mapManager.map.getAllBricks().size() > 0);
+    }
+
+    /*
+   Test to check whether there are collisions with an initialized map.
+   */
+    @Test
+    public void testCheckCollisionsWithMapNotNullBoostItemGreaterThanBottomBorder() {
+        ImageLoader imageLoader = new ImageLoader();
+        mapManager.createMap(imageLoader, "/Map 1.png");
+
+        BufferedImage coinStyle = gameEngine.getImageLoader().loadImage("/sprite.png");
+        coinStyle = gameEngine.getImageLoader().getSubImage(coinStyle, 1, 5, 48, 48);
+
+        FireFlower prize = new FireFlower(50, 50, coinStyle);
+        Coin coin = new Coin(50, 50, coinStyle , 5);
+        mapManager.map.addRevealedPrize(prize);
+        mapManager.map.addRevealedPrize(coin);
+
+        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
+        BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
+        OrdinaryBrick ordinaryBrick = new OrdinaryBrick(50, 50, brickStyle);
+
+        prize.setVelX(0);
+        prize.setY(9999999);
+
 
         mapManager.checkCollisions(gameEngine);
         assertTrue(mapManager.map.getAllBricks().size() > 0);
