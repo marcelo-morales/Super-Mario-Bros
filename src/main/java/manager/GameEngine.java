@@ -87,7 +87,7 @@ public class GameEngine implements Runnable {
         selectedMap = uiManager.changeSelectedMap(selectedMap, up);
     }
 
-    private void createMap(String path) {
+    public void createMap(String path) {
         //System.out.println("this is imageLoader " + imageLoader.toString());
         boolean loaded = mapManager.createMap(imageLoader, path);
         if(loaded){
@@ -202,6 +202,7 @@ public class GameEngine implements Runnable {
             if (input == ButtonAction.JUMP) {
                 mario.jump(this);
             } else if (input == ButtonAction.M_RIGHT) {
+                System.out.println("i am here 3");
                 mario.move(true, camera);
             } else if (input == ButtonAction.M_LEFT) {
                 mario.move(false, camera);

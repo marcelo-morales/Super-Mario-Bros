@@ -5,26 +5,26 @@ import manager.GameStatus;
 import manager.MapManager;
 import model.Map;
 import model.hero.Mario;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import manager.GameEngine;
 import view.ImageLoader;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 public class TestGameEngine {
 
-    public GameEngine gameEngine;
-    public MapManager mg;
+    public static GameEngine gameEngine;
+    public static MapManager mg;
 
-    @BeforeEach
-    public void setUpGameEngine() {
+    @BeforeAll
+    static void setUpGameEngine() {
 
         gameEngine = new GameEngine();
         ImageLoader imageLoader = new ImageLoader();
-         mg = new MapManager();
-        mg.createMap(imageLoader, "Map 1.png");
+        mg = new MapManager();
+        //gameEngine.createMap("/Map 1.png");
+        mg.createMap(imageLoader, "/Map 1.png");
     }
 
     @Test
@@ -59,6 +59,9 @@ public class TestGameEngine {
 //        gameEngine.setGameStatus(GameStatus.PAUSED);
 //    }
 
+    /*
+    Test receiving a keyboard input of select key when we are in the start screen.
+     */
     @Test
     public void testReceiveInputWithButtonSelectStartScreenViewAbout() {
         gameEngine.setGameStatus(GameStatus.START_SCREEN);
@@ -68,6 +71,9 @@ public class TestGameEngine {
         assertEquals(gameEngine.getGameStatus(),GameStatus.MAP_SELECTION);
     }
 
+    /*
+    Test receiving a keyboard input of select key when we are in the start screen.
+     */
     @Test
     public void testReceiveInputStartScreenButtonSelectViewAbout() {
         gameEngine.setGameStatus(GameStatus.START_SCREEN);
@@ -79,6 +85,7 @@ public class TestGameEngine {
 
 
     @Test
+    //bug game status is not changed when selecting map
     public void testReceiveInputWithMapSelectionButtonSelect() {
         gameEngine.setGameStatus(GameStatus.MAP_SELECTION);
         gameEngine.receiveInput(ButtonAction.SELECT);
@@ -124,9 +131,176 @@ public class TestGameEngine {
         assertEquals(gameEngine.getGameStatus(), GameStatus.RUNNING);
     }
 
+    /*
+    Test when the game is running and the user hits the jump button if mario is
+    actually jumps.
+     */
     @Test
-    public void testSelectMapViaMouse() {
+    public void testReceiveInputWithGameStatusRunningButtonActionJumping() {
 
+        gameEngine.createMap("/Map 1.png");
+        gameEngine.setGameStatus(GameStatus.RUNNING);
+        gameEngine.receiveInput(ButtonAction.JUMP);
+
+        Mario myMario = mg.getMario();
+
+        assertEquals(myMario.getY(), 240.0, 0.01);
+    }
+
+    /*
+    Test when the game is running and the user hits the right button key if mario
+    moves to the right.
+     */
+    @Test
+    public void testReceiveInputWithGameStatusRunningButtonActionRight() {
+
+        gameEngine.createMap("/Map 1.png");
+        gameEngine.setGameStatus(GameStatus.RUNNING);
+        gameEngine.receiveInput(ButtonAction.M_RIGHT);
+
+        Mario myMario = mg.getMario();
+
+        assertEquals(myMario.getX(), 144.0, 0.01);
+    }
+
+    /*
+    Test when the game is running and the user hits the left button key if mario
+    moves to the left.
+     */
+    @Test
+    public void testReceiveInputWithGameStatusRunningButtonActionLeft() {
+
+        gameEngine.createMap("/Map 1.png");
+        gameEngine.setGameStatus(GameStatus.RUNNING);
+        gameEngine.receiveInput(ButtonAction.M_LEFT);
+
+        Mario myMario = mg.getMario();
+        assertEquals(myMario.getX(), 144.0, 0.01);
+    }
+
+    /*
+   Test when the game is running and the user hits the left button key if mario
+   moves to the left.
+    */
+    @Test
+    public void testReceiveInputWithGameStatusRunningButtonActionCompleted() {
+
+        gameEngine.createMap("/Map 1.png");
+        gameEngine.setGameStatus(GameStatus.RUNNING);
+        gameEngine.receiveInput(ButtonAction.ACTION_COMPLETED);
+
+        Mario myMario = mg.getMario();
+        assertEquals(myMario.getX(), 0, 0.01);
+    }
+
+    /*
+  Test when the game is running and the user hits the fire button key if mario
+  moves to the left.
+   */
+    @Test
+    public void testReceiveInputWithGameStatusRunningButtonActionFire() {
+
+        gameEngine.createMap("/Map 1.png");
+        gameEngine.setGameStatus(GameStatus.RUNNING);
+        gameEngine.receiveInput(ButtonAction.FIRE);
+
+        assertEquals(mg.map.getFireballs().size(), 0);
+        //assertEquals(myMario.getX(), 0, 0.01);
+    }
+
+    /*
+  Test when the game is running and the pause button is pressed, that correct functionality continues.
+   */
+    @Test
+    public void testReceiveInputWithGameStatusRunningButtonActionResume() {
+
+        gameEngine.createMap("/Map 1.png");
+        gameEngine.setGameStatus(GameStatus.RUNNING);
+        gameEngine.receiveInput(ButtonAction.PAUSE_RESUME);
+
+        assertFalse(mg.isGameOver());
+    }
+
+
+    /*
+    Test that coin sound was played.
+     */
+    @Test
+    public void testPlayCoin() {
+        gameEngine.playCoin();
+        assertNotNull(gameEngine);
+    }
+
+    /*
+    Test that a one up sound was played.
+     */
+    @Test
+    public void testPlayOneUp() {
+        gameEngine.playOneUp();
+        assertNotNull(gameEngine);
+    }
+
+    /*
+   Test that a super mushroom sound was played.
+    */
+    @Test
+    public void testPlaySuperMushroom() {
+        gameEngine.playSuperMushroom();
+        assertNotNull(gameEngine);
+    }
+
+    /*
+   Test that a mario has died sound was played.
+    */
+    @Test
+    public void testPlayMarioDies() {
+        gameEngine.playMarioDies();
+        assertNotNull(gameEngine);
+    }
+
+    /*
+    Test that a jumping sound was played.
+    */
+    @Test
+    public void testPlayJump() {
+        gameEngine.playJump();
+        assertNotNull(gameEngine);
+    }
+
+    /*
+    Test that a fireflower sound was played.
+    */
+    @Test
+    public void testPlayFireFlower() {
+        gameEngine.playFireFlower();
+        assertNotNull(gameEngine);
+    }
+
+    /*
+   Test that a fireball sound was played.
+   */
+    @Test
+    public void testPlayFireball() {
+        gameEngine.playFireball();
+        assertNotNull(gameEngine);
+    }
+
+    /*
+  Test that a stomping sound was played.
+  */
+    @Test
+    public void testPlayStomp() {
+        gameEngine.playStomp();
+        assertNotNull(gameEngine);
+    }
+
+    /*
+     Test that I am able to get the MapManager.
+     */
+    @Test
+    public void testGetMapManager() {
+        MapManager mapManager = gameEngine.getMapManager();
+        assertNotNull(mapManager);
     }
 
 

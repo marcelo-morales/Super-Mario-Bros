@@ -6,8 +6,13 @@ import model.Map;
 import model.brick.Brick;
 import model.brick.GroundBrick;
 import model.brick.OrdinaryBrick;
+import model.enemy.Goomba;
 import model.hero.Fireball;
 import model.hero.Mario;
+import model.prize.BoostItem;
+import model.prize.Coin;
+import model.prize.FireFlower;
+import model.prize.Prize;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import view.ImageLoader;
@@ -16,6 +21,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 
 public class TestMapManager {
 
@@ -87,6 +93,7 @@ public class TestMapManager {
         mapManager.createMap(imageLoader, "/Map 1.png");
         Mario marioWithFire = mapManager.getMario();
         Fireball fireball = marioWithFire.fire();
+        marioWithFire.fire();
         mapManager.fire(gameEngine);
         mapManager.map.addFireball(fireball);
         assert(mapManager.map.getFireballs().size() > 0);
@@ -209,8 +216,43 @@ public class TestMapManager {
      */
     @Test
     public void testCheckCollisionsWithMapNull() {
-        mapManager.checkCollisions(gameEngine);
+        BufferedImage coinStyle = gameEngine.getImageLoader().loadImage("/sprite.png");
+
+        coinStyle = gameEngine.getImageLoader().getSubImage(coinStyle, 1, 5, 48, 48);
+        Coin firstCoin = new Coin(50, 50, coinStyle, 1);
+        Coin secondCoin = new Coin(0.5, 0.5, coinStyle , 5);
+
         assertNull(mapManager.map);
+    }
+
+    @Test
+    public void testCheckCollisionWithEnemiesFireballsAdded() {
+        ImageLoader imageLoader = new ImageLoader();
+        BufferedImage coinStyle = gameEngine.getImageLoader().loadImage("/sprite.png");
+
+        coinStyle = gameEngine.getImageLoader().getSubImage(coinStyle, 1, 5, 48, 48);
+        Coin firstCoin = new Coin(50, 50, coinStyle, 1);
+        Coin secondCoin = new Coin(0.5, 0.5, coinStyle , 5);
+
+        Fireball fireball = new Fireball(50, 50, coinStyle, false);
+        Goomba goomba = new Goomba(50, 50, coinStyle);
+
+        mapManager.createMap(imageLoader, "/Map 1.png");
+
+        mapManager.map.addEnemy(goomba);
+        mapManager.map.addFireball(fireball);
+
+        mapManager.map.addRevealedPrize(firstCoin);
+        mapManager.map.addRevealedPrize(secondCoin);
+
+        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
+        BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
+        OrdinaryBrick ordinaryBrick = new OrdinaryBrick(50, 50, brickStyle);
+        mapManager.map.addBrick(ordinaryBrick);
+
+        mapManager.checkCollisions(gameEngine);
+        assertNotNull(mapManager.map);
+
     }
 
     /*
@@ -220,8 +262,22 @@ public class TestMapManager {
     public void testCheckCollisionsWithMapNotNull() {
         ImageLoader imageLoader = new ImageLoader();
         mapManager.createMap(imageLoader, "/Map 1.png");
-        System.out.println("is map null " +         mapManager.createMap(imageLoader, "Map 1.png"));
+
+        BufferedImage coinStyle = gameEngine.getImageLoader().loadImage("/sprite.png");
+        coinStyle = gameEngine.getImageLoader().getSubImage(coinStyle, 1, 5, 48, 48);
+
+        FireFlower prize = new FireFlower(50, 50, coinStyle);
+        Coin coin = new Coin(0.5, 0.5, coinStyle , 5);
+        mapManager.map.addRevealedPrize(prize);
+        mapManager.map.addRevealedPrize(coin);
+
+        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
+        BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
+        OrdinaryBrick ordinaryBrick = new OrdinaryBrick(50, 50, brickStyle);
+        mapManager.map.addBrick(ordinaryBrick);
+
         mapManager.checkCollisions(gameEngine);
+        assertTrue(mapManager.map.getAllBricks().size() > 0);
     }
 
     /*
