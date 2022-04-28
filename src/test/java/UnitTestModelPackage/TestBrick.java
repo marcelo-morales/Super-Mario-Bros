@@ -12,8 +12,6 @@ import view.ImageLoader;
 
 import java.awt.image.BufferedImage;
 
-import static UnitTestModelPackage.CompareImages.compareImages;
-
 /**
  * GroundBrick, OrdinaryBrick, Pipe, and SurpriseBrick
  * are model classes that extend abstract class Brick.

@@ -11,7 +11,7 @@ import view.ImageLoader;
 
 import java.awt.image.BufferedImage;
 
-import static UnitTestModelPackage.CompareImages.compareImages;
+import static view.CompareImages.compareImages;
 
 public class TestBrickGameEngine {
     OrdinaryBrick ord;
