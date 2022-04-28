@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UIManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Super-Mario-Bros</a> &gt; <a href="index.source.html" class="el_package">view</a> &gt; <span class="el_source">UIManager.java</span></div><h1>UIManager.java</h1><pre class="source lang-java linenums">package view;
+
+import manager.GameEngine;
+import manager.GameStatus;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+
+public class UIManager extends JPanel{
+
+    private GameEngine engine;
+    private Font gameFont;
+    private BufferedImage startScreenImage, aboutScreenImage, helpScreenImage, gameOverScreen;
+    private BufferedImage heartIcon;
+    private BufferedImage coinIcon;
+    private BufferedImage selectIcon;
+    private MapSelection mapSelection;
+
+<span class="fc" id="L22">    public UIManager(GameEngine engine, int width, int height) {</span>
+<span class="fc" id="L23">        setPreferredSize(new Dimension(width, height));</span>
+<span class="fc" id="L24">        setMaximumSize(new Dimension(width, height));</span>
+<span class="fc" id="L25">        setMinimumSize(new Dimension(width, height));</span>
+
+<span class="fc" id="L27">        this.engine = engine;</span>
+<span class="fc" id="L28">        ImageLoader loader = engine.getImageLoader();</span>
+
+<span class="fc" id="L30">        mapSelection = new MapSelection();</span>
+
+<span class="fc" id="L32">        BufferedImage sprite = loader.loadImage(&quot;/sprite.png&quot;);</span>
+<span class="fc" id="L33">        this.heartIcon = loader.loadImage(&quot;/heart-icon.png&quot;);</span>
+<span class="fc" id="L34">        this.coinIcon = loader.getSubImage(sprite, 1, 5, 48, 48);</span>
+<span class="fc" id="L35">        this.selectIcon = loader.loadImage(&quot;/select-icon.png&quot;);</span>
+<span class="fc" id="L36">        this.startScreenImage = loader.loadImage(&quot;/start-screen.png&quot;);</span>
+<span class="fc" id="L37">        this.helpScreenImage = loader.loadImage(&quot;/help-screen.png&quot;);</span>
+<span class="fc" id="L38">        this.aboutScreenImage = loader.loadImage(&quot;/about-screen.png&quot;);</span>
+<span class="fc" id="L39">        this.gameOverScreen = loader.loadImage(&quot;/game-over.png&quot;);</span>
+
+        try {
+<span class="fc" id="L42">            InputStream in = getClass().getResourceAsStream(&quot;/media/font/mario-font.ttf&quot;);</span>
+<span class="fc" id="L43">            gameFont = Font.createFont(Font.TRUETYPE_FONT, in);</span>
+<span class="fc" id="L44">        } catch (FontFormatException | IOException e) {</span>
+<span class="fc" id="L45">            gameFont = new Font(&quot;Verdana&quot;, Font.PLAIN, 12);</span>
+<span class="fc" id="L46">            e.printStackTrace();</span>
+<span class="fc" id="L47">        }</span>
+<span class="fc" id="L48">    }</span>
+
+    @Override
+    public void paintComponent(Graphics g){
+<span class="fc" id="L52">        super.paintComponent(g);</span>
+
+<span class="fc" id="L54">        Graphics2D g2 = (Graphics2D) g.create();</span>
+<span class="fc" id="L55">        GameStatus gameStatus = engine.getGameStatus();</span>
+
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if(gameStatus == GameStatus.START_SCREEN){</span>
+<span class="fc" id="L58">            drawStartScreen(g2);</span>
+        }
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        else if(gameStatus == GameStatus.MAP_SELECTION){</span>
+<span class="fc" id="L61">            drawMapSelectionScreen(g2);</span>
+        }
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        else if(gameStatus == GameStatus.ABOUT_SCREEN){</span>
+<span class="fc" id="L64">            drawAboutScreen(g2);</span>
+        }
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        else if(gameStatus == GameStatus.HELP_SCREEN){</span>
+<span class="fc" id="L67">            drawHelpScreen(g2);</span>
+        }
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        else if(gameStatus == GameStatus.GAME_OVER){</span>
+<span class="fc" id="L70">            drawGameOverScreen(g2);</span>
+        }
+        else {
+<span class="fc" id="L73">            Point camLocation = engine.getCameraLocation();</span>
+<span class="fc" id="L74">            g2.translate(-camLocation.x, -camLocation.y);</span>
+<span class="fc" id="L75">            engine.drawMap(g2);</span>
+<span class="fc" id="L76">            g2.translate(camLocation.x, camLocation.y);</span>
+
+<span class="fc" id="L78">            drawPoints(g2);</span>
+<span class="fc" id="L79">            drawRemainingLives(g2);</span>
+<span class="fc" id="L80">            drawAcquiredCoins(g2);</span>
+<span class="fc" id="L81">            drawRemainingTime(g2);</span>
+
+<span class="fc bfc" id="L83" title="All 2 branches covered.">            if(gameStatus == GameStatus.PAUSED){</span>
+<span class="fc" id="L84">                drawPauseScreen(g2);</span>
+            }
+<span class="fc bfc" id="L86" title="All 2 branches covered.">            else if(gameStatus == GameStatus.MISSION_PASSED){</span>
+<span class="fc" id="L87">                drawVictoryScreen(g2);</span>
+            }
+        }
+
+<span class="fc" id="L91">        g2.dispose();</span>
+<span class="fc" id="L92">    }</span>
+
+    private void drawRemainingTime(Graphics2D g2) {
+<span class="fc" id="L95">        g2.setFont(gameFont.deriveFont(25f));</span>
+<span class="fc" id="L96">        g2.setColor(Color.WHITE);</span>
+<span class="fc" id="L97">        String displayedStr = &quot;TIME: &quot; + engine.getRemainingTime();</span>
+<span class="fc" id="L98">        g2.drawString(displayedStr, 750, 50);</span>
+<span class="fc" id="L99">    }</span>
+
+    protected void drawVictoryScreen(Graphics2D g2) {
+<span class="fc" id="L102">        g2.setFont(gameFont.deriveFont(50f));</span>
+<span class="fc" id="L103">        g2.setColor(Color.WHITE);</span>
+<span class="fc" id="L104">        String displayedStr = &quot;YOU WON!&quot;;</span>
+<span class="fc" id="L105">        int stringLength = g2.getFontMetrics().stringWidth(displayedStr);</span>
+<span class="fc" id="L106">        g2.drawString(displayedStr, (getWidth()-stringLength)/2, getHeight()/2);</span>
+<span class="fc" id="L107">    }</span>
+
+    protected void drawHelpScreen(Graphics2D g2) {
+<span class="fc" id="L110">        g2.drawImage(helpScreenImage, 0, 0, null);</span>
+<span class="fc" id="L111">    }</span>
+
+    protected void drawAboutScreen(Graphics2D g2) {
+<span class="fc" id="L114">        g2.drawImage(aboutScreenImage, 0, 0, null);</span>
+<span class="fc" id="L115">    }</span>
+
+    protected void drawGameOverScreen(Graphics2D g2) {
+<span class="fc" id="L118">        g2.drawImage(gameOverScreen, 0, 0, null);</span>
+<span class="fc" id="L119">        g2.setFont(gameFont.deriveFont(50f));</span>
+<span class="fc" id="L120">        g2.setColor(new Color(130, 48, 48));</span>
+<span class="fc" id="L121">        String acquiredPoints = &quot;Score: &quot; + engine.getScore();</span>
+<span class="fc" id="L122">        int stringLength = g2.getFontMetrics().stringWidth(acquiredPoints);</span>
+<span class="fc" id="L123">        int stringHeight = g2.getFontMetrics().getHeight();</span>
+<span class="fc" id="L124">        g2.drawString(acquiredPoints, (getWidth()-stringLength)/2, getHeight()-stringHeight*2);</span>
+<span class="fc" id="L125">    }</span>
+
+    protected void drawPauseScreen(Graphics2D g2) {
+<span class="fc" id="L128">        g2.setFont(gameFont.deriveFont(50f));</span>
+<span class="fc" id="L129">        g2.setColor(Color.WHITE);</span>
+<span class="fc" id="L130">        String displayedStr = &quot;PAUSED&quot;;</span>
+<span class="fc" id="L131">        int stringLength = g2.getFontMetrics().stringWidth(displayedStr);</span>
+<span class="fc" id="L132">        g2.drawString(displayedStr, (getWidth()-stringLength)/2, getHeight()/2);</span>
+<span class="fc" id="L133">    }</span>
+
+    private void drawAcquiredCoins(Graphics2D g2) {
+<span class="fc" id="L136">        g2.setFont(gameFont.deriveFont(30f));</span>
+<span class="fc" id="L137">        g2.setColor(Color.WHITE);</span>
+<span class="fc" id="L138">        String displayedStr = &quot;&quot; + engine.getCoins();</span>
+<span class="fc" id="L139">        g2.drawImage(coinIcon, getWidth()-115, 10, null);</span>
+<span class="fc" id="L140">        g2.drawString(displayedStr, getWidth()-65, 50);</span>
+<span class="fc" id="L141">    }</span>
+
+    private void drawRemainingLives(Graphics2D g2) {
+<span class="fc" id="L144">        g2.setFont(gameFont.deriveFont(30f));</span>
+<span class="fc" id="L145">        g2.setColor(Color.WHITE);</span>
+<span class="fc" id="L146">        String displayedStr = &quot;&quot; + engine.getRemainingLives();</span>
+<span class="fc" id="L147">        g2.drawImage(heartIcon, 50, 10, null);</span>
+<span class="fc" id="L148">        g2.drawString(displayedStr, 100, 50);</span>
+<span class="fc" id="L149">    }</span>
+
+    private void drawPoints(Graphics2D g2){
+<span class="fc" id="L152">        g2.setFont(gameFont.deriveFont(25f));</span>
+<span class="fc" id="L153">        g2.setColor(Color.WHITE);</span>
+<span class="fc" id="L154">        String displayedStr = &quot;Points: &quot; + engine.getScore();</span>
+<span class="fc" id="L155">        int stringLength = g2.getFontMetrics().stringWidth(displayedStr);;</span>
+        //g2.drawImage(coinIcon, 50, 10, null);
+<span class="fc" id="L157">        g2.drawString(displayedStr, 300, 50);</span>
+<span class="fc" id="L158">    }</span>
+
+    protected void drawStartScreen(Graphics2D g2){
+<span class="fc" id="L161">        int row = engine.getStartScreenSelection().getLineNumber();</span>
+<span class="fc" id="L162">        g2.drawImage(startScreenImage, 0, 0, null);</span>
+<span class="fc" id="L163">        g2.drawImage(selectIcon, 375, row * 70 + 440, null);</span>
+<span class="fc" id="L164">    }</span>
+
+    protected void drawMapSelectionScreen(Graphics2D g2){
+<span class="fc" id="L167">        g2.setFont(gameFont.deriveFont(50f));</span>
+<span class="fc" id="L168">        g2.setColor(Color.WHITE);</span>
+<span class="fc" id="L169">        mapSelection.draw(g2);</span>
+<span class="fc" id="L170">        int row = engine.getSelectedMap();</span>
+<span class="fc" id="L171">        int y_location = row*100+300-selectIcon.getHeight();</span>
+<span class="fc" id="L172">        g2.drawImage(selectIcon, 375, y_location, null);</span>
+<span class="fc" id="L173">    }</span>
+
+    public String selectMapViaMouse(Point mouseLocation) {
+<span class="fc" id="L176">        return mapSelection.selectMap(mouseLocation);</span>
+    }
+
+    public String selectMapViaKeyboard(int index){
+<span class="fc" id="L180">        return mapSelection.selectMap(index);</span>
+    }
+
+    public int changeSelectedMap(int index, boolean up){
+<span class="fc" id="L184">        return mapSelection.changeSelectedMap(index, up);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

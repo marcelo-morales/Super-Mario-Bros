@@ -4,7 +4,7 @@ import manager.Camera;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestCamera {
 
@@ -40,11 +40,52 @@ public class TestCamera {
     }
 
     @Test
-    public void testMoveCameraNoShake(){
+    public void testShakeCameraNoShake(){
         camera.moveCam(5.0, 5.0);
         assertEquals(camera.getX(), 5.0);
         assertEquals(camera.getY(), 5.0);
     }
+
+    @Test
+    public void testShakeCameraWithShakingAndNoFrameNumber() {
+        camera.shaking = true;
+        camera.frameNumber = -5;
+        camera.moveCam(6.0, 6.0);
+        assertFalse(camera.shaking);
+    }
+
+    @Test
+    public void testShakeCameraWithShakingAndFrameNumber() {
+        camera.shaking = true;
+        camera.frameNumber = 20;
+        camera.moveCam(6.0, 6.0);
+        assertTrue(camera.shaking);
+    }
+
+    @Test
+    public void testShakeCameraNoShakingAndFrameNumber() {
+        camera.shaking = false;
+        camera.frameNumber = 20;
+        camera.moveCam(6.0, 6.0);
+        assertFalse(camera.shaking);
+    }
+
+    @Test
+    public void testShakeCameraNoShakingAndNoFrameNumber() {
+        camera.shaking = false;
+        camera.frameNumber = -20;
+        camera.moveCam(6.0, 6.0);
+        assertFalse(camera.shaking);
+    }
+
+    @Test
+    public void testMoveCamWithNegativeFrameNum() {
+        camera.frameNumber = -5;
+        camera.moveCam(10.0, 10.0);
+        assertFalse(camera.shaking);
+    }
+
+
 
 
 }

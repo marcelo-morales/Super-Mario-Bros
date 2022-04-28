@@ -20,7 +20,7 @@ public class TestBrickGameEngine {
     public static GameEngine eng;
 
     @BeforeAll
-    public void setUp() {
+    static void setUp() {
         eng = new GameEngine();
     }
 
