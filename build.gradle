@@ -38,7 +38,7 @@ pitest {
     threads = 4
     outputFormats = ['XML', 'HTML']
     timestampedReports = false
-    excludedTestClasses = ['UnitTestModelPackage.TestBrickGameEngine*']
+    excludedTestClasses = ['UnitTestModelPackage.TestBrickGameEngine*', 'UnitTestManagerPackage.TestSoundManager*']
 }
 
 jacocoTestReport {
