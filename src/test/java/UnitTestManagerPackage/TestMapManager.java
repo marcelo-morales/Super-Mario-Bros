@@ -38,6 +38,7 @@ public class TestMapManager {
     }
 
     @Test
+    @Disabled
     public void testMapCreateFails() {
         ImageLoader imageLoader = new ImageLoader();
         assertFalse(mapManager.createMap(imageLoader, "/buggy_path"));

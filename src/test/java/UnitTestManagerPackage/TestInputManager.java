@@ -5,6 +5,7 @@ import manager.GameStatus;
 import manager.InputManager;
 import manager.MapManager;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import view.ImageLoader;
 
@@ -112,6 +113,7 @@ public class TestInputManager {
     }
 
     @Test
+    @Disabled
     public void testKeyPressedKeyEscapeGameStatusRunning(){
         Button a = new Button("click");
         KeyEvent e;
@@ -224,6 +226,7 @@ public class TestInputManager {
     }
 
     @Test
+    @Disabled
     public void testMousePressedWithMapSelection() {
         Button componentButton = new Button("click");
         MouseEvent keyEvent = new MouseEvent((Component) componentButton, 1, 100L, 2, 2, 2, 2, false);
