@@ -3,8 +3,8 @@ package manager;
 public class Camera {
 
     private double x, y;
-    private int frameNumber;
-    private boolean shaking;
+    public int frameNumber;
+    public boolean shaking;
 
     public Camera(){
         this.x = 0;
