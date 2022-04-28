@@ -42,7 +42,6 @@ public class MapSelectionTest {
      *
      * To achieve branch coverage.
      */
-    // TODO: how to properly test the draw() method...?
     @Test
     void testDraw() {
         BufferedImage mario = null;

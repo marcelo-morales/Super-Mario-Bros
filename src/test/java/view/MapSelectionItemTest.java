@@ -45,8 +45,6 @@ public class MapSelectionItemTest {
      *      Point location - {null, not null}
      *          base: not null
      */
-    // TODO: remove disabled
-    @Disabled
     @Test
     void testConstructorNullMap() {
         String mapName = null;
@@ -67,8 +65,6 @@ public class MapSelectionItemTest {
      *      Point location - {null, not null}
      *          base: not null
      */
-    // TODO: remove disabled
-    @Disabled
     @Test
     void testConstructorInvalidMap() {
         String mapName = "test";
