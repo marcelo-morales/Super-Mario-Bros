@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImageLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Super-Mario-Bros</a> &gt; <a href="index.source.html" class="el_package">view</a> &gt; <span class="el_source">ImageLoader.java</span></div><h1>ImageLoader.java</h1><pre class="source lang-java linenums">package view;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+public class ImageLoader {
+
+    private BufferedImage marioForms;
+    private BufferedImage brickAnimation;
+
+<span class="fc" id="L13">    public ImageLoader(){</span>
+<span class="fc" id="L14">        marioForms = loadImage(&quot;/mario-forms.png&quot;);</span>
+<span class="fc" id="L15">        brickAnimation = loadImage(&quot;/brick-animation.png&quot;);</span>
+<span class="fc" id="L16">    }</span>
+
+    public BufferedImage loadImage(String path){
+<span class="fc" id="L19">        BufferedImage imageToReturn = null;</span>
+
+        try {
+<span class="fc" id="L22">            imageToReturn = ImageIO.read(getClass().getResource(&quot;/media&quot; + path));</span>
+<span class="nc" id="L23">        } catch (IOException e) {</span>
+<span class="nc" id="L24">            e.printStackTrace();</span>
+<span class="fc" id="L25">        }</span>
+
+<span class="fc" id="L27">        return imageToReturn;</span>
+    }
+
+    public BufferedImage loadImage(File file){
+<span class="fc" id="L31">        BufferedImage imageToReturn = null;</span>
+
+        try {
+<span class="fc" id="L34">            imageToReturn = ImageIO.read(file);</span>
+<span class="fc" id="L35">        } catch (IOException e) {</span>
+<span class="fc" id="L36">            e.printStackTrace();</span>
+<span class="fc" id="L37">        }</span>
+
+<span class="fc" id="L39">        return imageToReturn;</span>
+    }
+
+    public BufferedImage getSubImage(BufferedImage image, int col, int row, int w, int h){
+<span class="fc bfc" id="L43" title="All 6 branches covered.">        if((col == 1 || col == 4) &amp;&amp; row == 3){ //koopa</span>
+<span class="fc" id="L44">            return image.getSubimage((col-1)*48, 128, w, h);</span>
+        }
+<span class="fc" id="L46">        return image.getSubimage((col-1)*48, (row-1)*48, w, h);</span>
+    }
+
+    public BufferedImage[] getLeftFrames(int marioForm){
+<span class="fc" id="L50">        BufferedImage[] leftFrames = new BufferedImage[5];</span>
+<span class="fc" id="L51">        int col = 1;</span>
+<span class="fc" id="L52">        int width = 52, height = 48;</span>
+
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if(marioForm == 1) { //super mario</span>
+<span class="fc" id="L55">            col = 4;</span>
+<span class="fc" id="L56">            width = 48;</span>
+<span class="fc" id="L57">            height = 96;</span>
+        }
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        else if(marioForm == 2){ //fire mario</span>
+<span class="fc" id="L60">            col = 7;</span>
+<span class="fc" id="L61">            width = 48;</span>
+<span class="fc" id="L62">            height = 96;</span>
+        }
+
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        for(int i = 0; i &lt; 5; i++){</span>
+<span class="fc" id="L66">            leftFrames[i] = marioForms.getSubimage((col-1)*width, (i)*height, width, height);</span>
+        }
+<span class="fc" id="L68">        return leftFrames;</span>
+    }
+
+    public BufferedImage[] getRightFrames(int marioForm){
+<span class="fc" id="L72">        BufferedImage[] rightFrames = new BufferedImage[5];</span>
+<span class="fc" id="L73">        int col = 2;</span>
+<span class="fc" id="L74">        int width = 52, height = 48;</span>
+
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if(marioForm == 1) { //super mario</span>
+<span class="fc" id="L77">            col = 5;</span>
+<span class="fc" id="L78">            width = 48;</span>
+<span class="fc" id="L79">            height = 96;</span>
+        }
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        else if(marioForm == 2){ //fire mario</span>
+<span class="fc" id="L82">            col = 8;</span>
+<span class="fc" id="L83">            width = 48;</span>
+<span class="fc" id="L84">            height = 96;</span>
+        }
+
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        for(int i = 0; i &lt; 5; i++){</span>
+<span class="fc" id="L88">            rightFrames[i] = marioForms.getSubimage((col-1)*width, (i)*height, width, height);</span>
+        }
+<span class="fc" id="L90">        return rightFrames;</span>
+    }
+
+    public BufferedImage[] getBrickFrames() {
+<span class="fc" id="L94">        BufferedImage[] frames = new BufferedImage[4];</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        for(int i = 0; i &lt; 4; i++){</span>
+<span class="fc" id="L96">            frames[i] = brickAnimation.getSubimage(i*105, 0, 105, 105);</span>
+        }
+<span class="fc" id="L98">        return frames;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
