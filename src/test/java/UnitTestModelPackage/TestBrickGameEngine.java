@@ -5,6 +5,7 @@ import model.brick.OrdinaryBrick;
 import model.brick.SurpriseBrick;
 import model.prize.Coin;
 import model.prize.Prize;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import view.Animation;
 import view.ImageLoader;
@@ -16,6 +17,12 @@ import static view.CompareImages.compareImages;
 public class TestBrickGameEngine {
     OrdinaryBrick ord;
     SurpriseBrick surp;
+    public static GameEngine eng;
+
+    @BeforeAll
+    public void setUp() {
+        eng = new GameEngine();
+    }
 
     /**
      * test that all fields of a brick are appropriately
@@ -27,7 +34,6 @@ public class TestBrickGameEngine {
     public void testOrdinaryBrickReveal00() {
         ImageLoader imageLoader = new ImageLoader();
 
-        GameEngine eng = new GameEngine();
         eng.getMapManager().createMap(imageLoader, "/Map 2.png");
         eng.getMapManager().getMario().getMarioForm().setSuper(true);
 
@@ -54,7 +60,6 @@ public class TestBrickGameEngine {
     public void testOrdinaryBrickReveal01() {
         ImageLoader imageLoader = new ImageLoader();
 
-        GameEngine eng = new GameEngine();
         eng.getMapManager().createMap(imageLoader, "/Map 2.png");
         eng.getMapManager().getMario().getMarioForm().setSuper(false);
 
@@ -80,7 +85,6 @@ public class TestBrickGameEngine {
     public void testOrdinaryBrickReveal02() {
         ImageLoader imageLoader = new ImageLoader();
 
-        GameEngine eng = new GameEngine();
         eng.getMapManager().createMap(imageLoader, "/Map 2.png");
         eng.getMapManager().getMario().getMarioForm().setSuper(false);
 
@@ -103,21 +107,19 @@ public class TestBrickGameEngine {
      */
     @Test
     public void testSurpriseBrickReveal00() {
-        GameEngine engine = new GameEngine();
-
-        BufferedImage oldStyle = engine.getImageLoader().loadImage("/sprite.png");
-        oldStyle = engine.getImageLoader().getSubImage(oldStyle, 2, 1, 48, 48);
-        BufferedImage newStyle = engine.getImageLoader().loadImage("/sprite.png");
-        newStyle = engine.getImageLoader().getSubImage(newStyle, 1, 2, 48, 48);
-        BufferedImage coinStyle = engine.getImageLoader().loadImage("/sprite.png");
-        coinStyle = engine.getImageLoader().getSubImage(coinStyle, 1, 5, 48, 48);
+        BufferedImage oldStyle = eng.getImageLoader().loadImage("/sprite.png");
+        oldStyle = eng.getImageLoader().getSubImage(oldStyle, 2, 1, 48, 48);
+        BufferedImage newStyle = eng.getImageLoader().loadImage("/sprite.png");
+        newStyle = eng.getImageLoader().getSubImage(newStyle, 1, 2, 48, 48);
+        BufferedImage coinStyle = eng.getImageLoader().loadImage("/sprite.png");
+        coinStyle = eng.getImageLoader().getSubImage(coinStyle, 1, 5, 48, 48);
         Prize prize = new Coin(50, 50, coinStyle, 1);
 
         surp = new SurpriseBrick(50, 50, oldStyle, prize);
         assert(surp.getX() == 50);
         assert(surp.getY() == 50);
 
-        Prize returned = surp.reveal(engine);
+        Prize returned = surp.reveal(eng);
 
         //assert that brick is now empty
         assert(surp.isEmpty());
@@ -134,19 +136,17 @@ public class TestBrickGameEngine {
      */
     @Test
     public void testSurpriseBrickReveal01() {
-        GameEngine engine = new GameEngine();
-
-        BufferedImage oldStyle = engine.getImageLoader().loadImage("/sprite.png");
-        oldStyle = engine.getImageLoader().getSubImage(oldStyle, 2, 1, 48, 48);
-        BufferedImage newStyle = engine.getImageLoader().loadImage("/sprite.png");
-        newStyle = engine.getImageLoader().getSubImage(newStyle, 1, 2, 48, 48);
+        BufferedImage oldStyle = eng.getImageLoader().loadImage("/sprite.png");
+        oldStyle = eng.getImageLoader().getSubImage(oldStyle, 2, 1, 48, 48);
+        BufferedImage newStyle = eng.getImageLoader().loadImage("/sprite.png");
+        newStyle = eng.getImageLoader().getSubImage(newStyle, 1, 2, 48, 48);
         Prize prize = null;
 
         surp = new SurpriseBrick(50, 50, oldStyle, prize);
         assert(surp.getX() == 50);
         assert(surp.getY() == 50);
 
-        Prize returned = surp.reveal(engine);
+        Prize returned = surp.reveal(eng);
 
         //assert that brick is now empty
         assert(surp.isEmpty());
@@ -167,7 +167,6 @@ public class TestBrickGameEngine {
         Animation animation = new Animation(leftFrames, leftFrames);
         BufferedImage anim = animation.animate(3, true);
 
-        GameEngine eng = new GameEngine();
         eng.getMapManager().createMap(imageLoader, "/Map 2.png");
         eng.getMapManager().getMario().getMarioForm().setSuper(true);
 
