@@ -134,6 +134,7 @@ public class AnimationTest {
      *
      * goal: whitebox testing branch coverage
      */
+    @Disabled
     @Test
     void testAnimateCountGreaterThanSpeedToRightArrayLengthLessThanThree() {
         rightFrames = new BufferedImage[2];
