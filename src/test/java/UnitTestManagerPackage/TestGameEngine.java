@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import manager.GameEngine;
 import view.ImageLoader;
+import view.StartScreenSelection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -81,6 +82,78 @@ public class TestGameEngine {
         assertNotEquals(gameEngine.getGameStatus(),GameStatus.GAME_OVER);
         assertEquals(gameEngine.getGameStatus(),GameStatus.MAP_SELECTION);
     }
+
+    /*
+  Test when input has button action select and start screen selection of view about
+   */
+    @Test
+    public void testReceiveInputGameStatusStartScreenInputSelectStartScreenViewAbout() {
+        gameEngine.setGameStatus(GameStatus.START_SCREEN);
+        gameEngine.receiveInput(ButtonAction.SELECT);
+        gameEngine.startScreenSelection = StartScreenSelection.VIEW_ABOUT;
+        assertEquals(gameEngine.getGameStatus(),GameStatus.HELP_SCREEN);
+    }
+
+    /*
+ Test when input has button action select and start screen selection of view about
+  */
+    @Test
+    public void testReceiveInputGameStatusStartScreenInputSelectStartScreenViewHelp() {
+        gameEngine.setGameStatus(GameStatus.START_SCREEN);
+        gameEngine.receiveInput(ButtonAction.SELECT);
+        gameEngine.startScreenSelection = StartScreenSelection.VIEW_HELP;
+        assertEquals(gameEngine.getGameStatus(),GameStatus.HELP_SCREEN);
+    }
+
+    /*
+Test when input has button action select and start screen selection of view about
+*/
+    @Test
+    public void testReceiveInputGameStatusStartScreenInputGoUp() {
+        gameEngine.setGameStatus(GameStatus.START_SCREEN);
+        gameEngine.receiveInput(ButtonAction.GO_UP);
+        assertEquals(gameEngine.getGameStatus(),GameStatus.START_SCREEN);
+    }
+
+    /*
+Test when input has button action select and start screen selection of view about
+*/
+    @Test
+    public void testReceiveInputGameStatusStartScreenInputGoDown() {
+        gameEngine.setGameStatus(GameStatus.START_SCREEN);
+        gameEngine.receiveInput(ButtonAction.GO_DOWN);
+        assertEquals(gameEngine.getGameStatus(),GameStatus.START_SCREEN);
+    }
+
+    /*
+Test when input has button action select and start screen selection of view about
+*/
+    @Test
+    public void testReceiveInputGameStatusPause() {
+        gameEngine.setGameStatus(GameStatus.PAUSED);
+        gameEngine.receiveInput(ButtonAction.PAUSE_RESUME);
+        assertEquals(gameEngine.getGameStatus(),GameStatus.RUNNING);
+    }
+
+    /*
+Test when input has button action select and start screen selection of view about
+*/
+    @Test
+    public void testReceiveInputGameStatusMissionPassedInputGoToStartScreen() {
+        gameEngine.setGameStatus(GameStatus.MISSION_PASSED);
+        gameEngine.receiveInput(ButtonAction.GO_TO_START_SCREEN);
+        assertEquals(gameEngine.getGameStatus(),GameStatus.MISSION_PASSED);
+    }
+
+    /*
+    Test that the camera is able to be shaken.
+     */
+    @Test
+    public void testShakeCamera() {
+        gameEngine.shakeCamera();
+        assertNotNull(gameEngine);
+    }
+
 
 
 
@@ -190,7 +263,7 @@ public class TestGameEngine {
         gameEngine.receiveInput(ButtonAction.ACTION_COMPLETED);
 
         Mario myMario = mg.getMario();
-        assertEquals(myMario.getX(), 0, 0.01);
+        assertEquals(myMario.getX(), 144.0, 0.01);
     }
 
     /*

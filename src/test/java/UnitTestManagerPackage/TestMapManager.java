@@ -250,9 +250,13 @@ public class TestMapManager {
         OrdinaryBrick ordinaryBrick = new OrdinaryBrick(50, 50, brickStyle);
         mapManager.map.addBrick(ordinaryBrick);
 
+        ordinaryBrick.setLocation(0, 0);
+        firstCoin.setLocation(0, 0);
+
+
+
         mapManager.checkCollisions(gameEngine);
         assertNotNull(mapManager.map);
-
     }
 
     /*
@@ -267,14 +271,14 @@ public class TestMapManager {
         coinStyle = gameEngine.getImageLoader().getSubImage(coinStyle, 1, 5, 48, 48);
 
         FireFlower prize = new FireFlower(50, 50, coinStyle);
-        Coin coin = new Coin(0.5, 0.5, coinStyle , 5);
+        Coin coin = new Coin(50, 50, coinStyle , 5);
         mapManager.map.addRevealedPrize(prize);
         mapManager.map.addRevealedPrize(coin);
 
         BufferedImage sprite = imageLoader.loadImage("/sprite.png");
         BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
         OrdinaryBrick ordinaryBrick = new OrdinaryBrick(50, 50, brickStyle);
-        mapManager.map.addBrick(ordinaryBrick);
+        prize.setVelX(10);
 
         mapManager.checkCollisions(gameEngine);
         assertTrue(mapManager.map.getAllBricks().size() > 0);

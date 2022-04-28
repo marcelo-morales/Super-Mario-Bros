@@ -278,6 +278,7 @@ public class MapManager {
                         brickBounds = brick.getTopBounds();
 
                         if (brickBounds.intersects(prizeBottomBounds)) {
+                            System.out.println("plsssss here");
                             boost.setFalling(false);
                             boost.setVelY(0);
                             boost.setY(brick.getY() - boost.getDimension().height + 1);
@@ -287,6 +288,7 @@ public class MapManager {
                     }
 
                     if (boost.getVelX() > 0) {
+                        System.out.println("hello world!!");
                         brickBounds = brick.getLeftBounds();
 
                         if (brickBounds.intersects(prizeRightBounds)) {

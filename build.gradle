@@ -27,8 +27,8 @@ test {
 
 pitest {
     junit5PluginVersion = '0.12'
-    targetClasses = ['model.*', 'view.*']  //by default "${project.group}.*"
-    targetTests = ['UnitTestModelPackage.*', 'view.*Test*']
+    targetClasses = ['model.*', 'view.*', 'manager.*']  //by default "${project.group}.*"
+    targetTests = ['UnitTestModelPackage.*', 'view.*Test*', 'UnitTestManagerPackage.*']
     threads = 4
     outputFormats = ['XML', 'HTML']
     timestampedReports = false

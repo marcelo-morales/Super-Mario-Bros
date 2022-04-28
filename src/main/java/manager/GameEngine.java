@@ -20,7 +20,7 @@ public class GameEngine implements Runnable {
     private Camera camera;
     private ImageLoader imageLoader;
     private Thread thread;
-    private StartScreenSelection startScreenSelection = StartScreenSelection.START_GAME;
+    public StartScreenSelection startScreenSelection = StartScreenSelection.START_GAME;
     private int selectedMap = 0;
 
     public GameEngine() {
