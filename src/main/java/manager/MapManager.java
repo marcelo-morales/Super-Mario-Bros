@@ -254,7 +254,7 @@ public class MapManager {
         }
     }
 
-    private void checkPrizeCollision() {
+    public void checkPrizeCollision() {
         ArrayList<Prize> prizes = map.getRevealedPrizes();
         ArrayList<Brick> bricks = map.getAllBricks();
 

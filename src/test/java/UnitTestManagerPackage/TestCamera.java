@@ -51,7 +51,7 @@ public class TestCamera {
         camera.shaking = true;
         camera.frameNumber = -5;
         camera.moveCam(6.0, 6.0);
-        assertTrue(camera.shaking);
+        assertFalse(camera.shaking);
     }
 
     @Test

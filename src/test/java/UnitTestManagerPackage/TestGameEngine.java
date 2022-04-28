@@ -28,6 +28,10 @@ public class TestGameEngine {
         mg.createMap(imageLoader, "/Map 1.png");
     }
 
+    /*
+    Test that game was initialized successfully with Start Screen game status
+    starting the game.
+     */
     @Test
     public void testGameEngineInit() {
         assertSame(gameEngine.getGameStatus(), GameStatus.START_SCREEN);
