@@ -156,6 +156,20 @@ public class ImageLoaderTest {
     }
 
     /**
+     * Test getSubImage() with Koopa when col == 4.
+     *
+     * goal: mutation testing coverage increase
+     */
+    @Test
+    void testGetSubImageKoopaMutation() {
+        int col = 4;
+        int row = 3;
+        BufferedImage koopa = spriteImage.getSubimage((col-1)*48, 128, 48, 48);
+        BufferedImage subImage = loader.getSubImage(spriteImage, col, row, 48, 48);
+        assertTrue(CompareImages.compareImages(koopa, subImage));
+    }
+
+    /**
      * Test getSubImage() with SuperMushroom.
      *
      * goal: whitebox testing branch coverage
