@@ -3,6 +3,7 @@ package UnitTestModelPackage;
 import manager.GameEngine;
 import model.hero.Mario;
 import model.prize.Coin;
+import model.prize.FireFlower;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import view.ImageLoader;
@@ -96,38 +97,18 @@ public class TestPrize {
         assert(coin.getY() == 45);
     }
 
-    @Test
-    public void testCoinDraw() {
-
-    }
-
-    @Test
-    public void testFireFlowerOnTouch() {
-
-    }
-
-    @Test
-    public void testFireFlowerDraw() {
-
-    }
-
+    /**
+     * test FireFlower class reveal method.
+     */
     @Test
     public void testFireFlowerReveal() {
+        ImageLoader imageLoader = new ImageLoader();
+        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
+        BufferedImage flowerStyle = imageLoader.getSubImage(sprite, 4, 5, 48, 48);
+        FireFlower fireFlower = new FireFlower(50, 50, flowerStyle);
 
-    }
+        fireFlower.reveal();
 
-    @Test
-    public void testOneUpMushroomOnTouch() {
-
-    }
-
-    @Test
-    public void testOneUpMushroomUpdateLocation() {
-
-    }
-
-    @Test
-    public void testSuperMushroomOnTouch() {
-
+        assert(fireFlower.getY() == 2);
     }
 }

@@ -77,9 +77,9 @@ public class TestBrickGameEngine {
     }
 
     /**
-     * Todo: make this test interaction based testing?
-     * check that correct changes being made to mapManager object
-     * Does that count as integration testing?
+     * test that all fields of a brick are appropriately
+     * updated after calling the reveal method.
+     * Branch 2
      */
     @Test
     public void testOrdinaryBrickReveal02() {
