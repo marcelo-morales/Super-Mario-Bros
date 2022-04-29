@@ -26,6 +26,9 @@ import static org.junit.jupiter.api.Assertions.*;
  *      testLoadImageStringNullPath(), testLoadImageStringInvalidPath(), and testLoadImageFileNullFile()
  *      test methods fails because they will throw an IllegalArgumentException, not a IOException. Therefore the
  *      exception will not be caught and will propagate through the program and throw the exception, not return null.
+ *
+ *      cannot achieve 100% mutation score because there are two Exception.printStackTrace() operations, which
+ *      do not change the output of the program when not executed.
  */
 public class ImageLoaderTest {
     private final String marioPath = "src/main/resources/media/mario-forms.png";
