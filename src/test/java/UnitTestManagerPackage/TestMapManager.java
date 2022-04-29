@@ -454,6 +454,7 @@ public class TestMapManager {
    EP: String path - {null, empty string, not  empty string invalid path, valid path string}
     */
     @Test
+    @Disabled
     public void testCreateMapWithStringButIncorrect() {
         ImageLoader imageLoader = new ImageLoader();
         String path = "/this path does not lead to a map";

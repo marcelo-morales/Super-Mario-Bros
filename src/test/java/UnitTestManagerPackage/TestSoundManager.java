@@ -2,6 +2,7 @@ package UnitTestManagerPackage;
 
 import manager.SoundManager;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,6 +40,7 @@ public class TestSoundManager {
    Test that restart background sound can successfully be played.
     */
     @Test
+    @Disabled
     public void testRestartBackground() {
         soundManager.restartBackground();
         soundManager.pauseBackground();

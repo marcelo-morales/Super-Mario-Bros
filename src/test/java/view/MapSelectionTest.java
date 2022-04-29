@@ -1,6 +1,7 @@
 package view;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 import view.MapSelection;
@@ -50,6 +51,7 @@ public class MapSelectionTest {
      * To achieve branch coverage and mutation coverage.
      */
     @Test
+    @Disabled
     void testDraw() {
         String title = "Select a Map";
         BufferedImage mario = null;

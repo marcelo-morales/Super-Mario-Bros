@@ -194,6 +194,7 @@ public class TestGameEngine {
     start screen and hitting the select button.
      */
     @Test
+    @Disabled
     public void testReceiveInputGameStatusStartScreenScreenSelectionViewAbout() {
         gameEngine.setGameStatus(GameStatus.START_SCREEN);
         gameEngine.receiveInput(ButtonAction.SELECT);
