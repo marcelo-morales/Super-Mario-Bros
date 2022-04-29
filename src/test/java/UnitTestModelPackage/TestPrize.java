@@ -100,4 +100,34 @@ public class TestPrize {
     public void testCoinDraw() {
 
     }
+
+    @Test
+    public void testFireFlowerOnTouch() {
+
+    }
+
+    @Test
+    public void testFireFlowerDraw() {
+
+    }
+
+    @Test
+    public void testFireFlowerReveal() {
+
+    }
+
+    @Test
+    public void testOneUpMushroomOnTouch() {
+
+    }
+
+    @Test
+    public void testOneUpMushroomUpdateLocation() {
+
+    }
+
+    @Test
+    public void testSuperMushroomOnTouch() {
+
+    }
 }
