@@ -130,10 +130,60 @@ public class AnimationTest {
     }
 
     /**
+     * Test animate() when the counter is equal to speed, and toRight = false.
+     *
+     * goal: mutation testing coverage increase
+     */
+    @Test
+    void testAnimateCounterEqualToSpeedToRight() {
+        assertEquals(rightFrames[1], animation.animate(1, true));
+    }
+
+    /**
+     * Test nextFrame() when (index + 3 = frames.length).
+     *
+     * goal: mutation testing coverage increase
+     */
+    @Test
+    void testNextFrameMutationOne() {
+        int frameLength = 4;
+        int numAnimate = 2;
+        int expectedIndex = 3;
+        BufferedImage[] rightFrames = getFramesWithLength(frameLength);
+        BufferedImage[] leftFrames = getFramesWithLength(frameLength);
+        Animation animation = new Animation(leftFrames, rightFrames);
+        for (int i = 0; i < numAnimate - 1; i++) {
+            animation.animate(0, true);
+        }
+        assertEquals(rightFrames[expectedIndex], animation.animate(0, true));
+    }
+
+    /**
+     * Test nextFrame() when (index + 3 > frames.length) is true but (index - 3 = frames.length).
+     *
+     * goal: mutation testing coverage increase
+     */
+    @Test
+    void testNextFrameMutationTwo() {
+        int frameLength = 5;
+        int numAnimate = 4;
+        int expectedIndex = 2;
+        BufferedImage[] rightFrames = getFramesWithLength(frameLength);
+        BufferedImage[] leftFrames = getFramesWithLength(frameLength);
+        Animation animation = new Animation(leftFrames, rightFrames);
+        for (int i = 0; i < numAnimate - 1; i++) {
+            animation.animate(0, true);
+        }
+        assertEquals(rightFrames[expectedIndex], animation.animate(0, true));
+    }
+
+    /**
      * Test animate() when the length of the array is less than three.
      *
      * goal: whitebox testing branch coverage
      */
+    // TODO: disabled tag
+    @Disabled
     @Test
     void testAnimateCountGreaterThanSpeedToRightArrayLengthLessThanThree() {
         rightFrames = new BufferedImage[2];
@@ -156,5 +206,21 @@ public class AnimationTest {
         } catch (Exception e) {
             fail("Unexpected exception thrown\n" + e);
         }
+    }
+
+    /**
+     * Helper method to get an array of BufferedImage objects of length in param.q
+     */
+    private BufferedImage[] getFramesWithLength(int length) {
+        BufferedImage[] frames = new BufferedImage[length];
+        try {
+            for (int i = 0; i < length; i++) {
+                BufferedImage frame = ImageIO.read(getClass().getResource("/media" + imagePath));
+                frames[i] = frame;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return frames;
     }
 }

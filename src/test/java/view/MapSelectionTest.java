@@ -2,6 +2,7 @@ package view;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import view.MapSelection;
 
 import javax.imageio.ImageIO;
@@ -10,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Test class to test the MapSelection class.
@@ -27,6 +29,11 @@ import static org.junit.jupiter.api.Assertions.*;
  *      the condition "if(mapSelectionItems=null)" is never true because in the createItems() method, it always
  *      returns a non-null array (although it can be empty).
  *      Hence the branch never executes.
+ *
+ *      cannot achieve 100% mutation score in this class. lines 21 and 48 are unreachable, line 34, 64, and 65
+ *      is not possible to kill mutant because we have no way of changing the dimensions, and condition on line 80
+ *      is not possible to kill mutant because the mapSelectionItems.length is 2, and therefore will always wraparound
+ *      to each other.
  */
 public class MapSelectionTest {
     String[] maps = {"Map 1.png", "Map 2.png"};
@@ -40,18 +47,40 @@ public class MapSelectionTest {
     /**
      * Test draw() method.
      *
-     * To achieve branch coverage.
+     * To achieve branch coverage and mutation coverage.
      */
     @Test
     void testDraw() {
+        String title = "Select a Map";
         BufferedImage mario = null;
         try {
             mario = ImageIO.read(new File("src/main/resources/media/mario-forms.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // get Point objs
+        int defaultGridSize = 100;
+        String nameOne = "Map 1.png";
+        String nameTwo = "Map 2.png";
+
+        // create spy
         Graphics graphics = mario.getGraphics();
+        int x_location = (1280 - graphics.getFontMetrics().stringWidth(title))/2;
+        graphics = spy(graphics);
+
+        // call method to test
         mapSelection.draw(graphics);
+
+        // verification
+        InOrder inOrder = inOrder(graphics);
+        inOrder.verify(graphics).setColor(Color.BLACK);
+        inOrder.verify(graphics).fillRect(0, 0, 1280, 720);
+        inOrder.verify(graphics).setColor(Color.YELLOW);
+        inOrder.verify(graphics).drawString(title, x_location, 150);
+        inOrder.verify(graphics).setColor(Color.WHITE);
+        inOrder.verify(graphics).drawString(nameOne.split("[.]")[0], 621, 300);
+        inOrder.verify(graphics).setColor(Color.WHITE);
+        inOrder.verify(graphics).drawString(nameTwo.split("[.]")[0], 621, 400);
     }
 
     /**
@@ -102,6 +131,9 @@ public class MapSelectionTest {
         assertNull(mapSelection.selectMap(mouseLocation));
     }
 
+//    @Test
+//    void testSelectMapWithPoint
+
     /**
      * Test selectMap(int) with valid index.
      */
@@ -129,7 +161,17 @@ public class MapSelectionTest {
      */
     @Test
     void testSelectMapWithIndexInvalidIndexTwo() {
-        assertNull(mapSelection.selectMap(-2));
+        assertNull(mapSelection.selectMap(-1));
+    }
+
+    /**
+     * Test selectMap(int) with index = 2
+     *
+     * goal: mutation testing coverage increase
+     */
+    @Test
+    void testSelectMapWithIndexMutation() {
+        assertNull(mapSelection.selectMap(2));
     }
 
     /**
@@ -140,7 +182,7 @@ public class MapSelectionTest {
      */
     @Test
     void testChangeSelectedMapUp() {
-        assertEquals(0, mapSelection.changeSelectedMap(1, true));
+        assertEquals(1, mapSelection.changeSelectedMap(2, true));
     }
 
     /**

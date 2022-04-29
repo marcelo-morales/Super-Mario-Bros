@@ -91,7 +91,7 @@ public class UIManager extends JPanel{
         g2.dispose();
     }
 
-    private void drawRemainingTime(Graphics2D g2) {
+    protected void drawRemainingTime(Graphics2D g2) {
         g2.setFont(gameFont.deriveFont(25f));
         g2.setColor(Color.WHITE);
         String displayedStr = "TIME: " + engine.getRemainingTime();
@@ -132,7 +132,7 @@ public class UIManager extends JPanel{
         g2.drawString(displayedStr, (getWidth()-stringLength)/2, getHeight()/2);
     }
 
-    private void drawAcquiredCoins(Graphics2D g2) {
+    protected void drawAcquiredCoins(Graphics2D g2) {
         g2.setFont(gameFont.deriveFont(30f));
         g2.setColor(Color.WHITE);
         String displayedStr = "" + engine.getCoins();
@@ -140,7 +140,7 @@ public class UIManager extends JPanel{
         g2.drawString(displayedStr, getWidth()-65, 50);
     }
 
-    private void drawRemainingLives(Graphics2D g2) {
+    protected void drawRemainingLives(Graphics2D g2) {
         g2.setFont(gameFont.deriveFont(30f));
         g2.setColor(Color.WHITE);
         String displayedStr = "" + engine.getRemainingLives();
@@ -148,7 +148,7 @@ public class UIManager extends JPanel{
         g2.drawString(displayedStr, 100, 50);
     }
 
-    private void drawPoints(Graphics2D g2){
+    protected void drawPoints(Graphics2D g2){
         g2.setFont(gameFont.deriveFont(25f));
         g2.setColor(Color.WHITE);
         String displayedStr = "Points: " + engine.getScore();

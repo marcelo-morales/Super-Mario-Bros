@@ -15,6 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
  *      not possible to achieve branch coverage in the select() method.
  *      line 24 logical condition never evaluates to false because there are no enumerations with integer values
  *      smaller than 0 or greater than 2.
+ *
+ *      cannot achieve 100% mutation score because the condition (if(lineNumber > -1 && lineNumber < 3)) with
+ *      changing condition operator cannot be killed because we can never initialize this enum class to have
+ *      lineNumber less than or equal to -1 or greater than or equal to 3.
  */
 public class StartScreenSelectionTest {
 
@@ -79,6 +83,6 @@ public class StartScreenSelectionTest {
      */
     @Test
     void testGetLineNumber() {
-        assertEquals(0, StartScreenSelection.START_GAME.getLineNumber());
+        assertEquals(1, StartScreenSelection.VIEW_HELP.getLineNumber());
     }
 }
