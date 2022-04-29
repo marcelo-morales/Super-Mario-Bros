@@ -1,6 +1,8 @@
 package UnitTestModelPackage;
 
+import manager.Camera;
 import model.brick.OrdinaryBrick;
+import model.hero.Fireball;
 import model.hero.Mario;
 import model.hero.MarioForm;
 import org.junit.jupiter.api.Test;
@@ -21,9 +23,6 @@ public class TestHero {
     @Test
     public void testMarioUpdateLocation00() {
         ImageLoader imageLoader = new ImageLoader();
-
-        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
-        BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
 
         mario = new Mario(50, 50);
         mario.setJumping(true);
@@ -46,9 +45,6 @@ public class TestHero {
     @Test
     public void testMarioUpdateLocation01() {
         ImageLoader imageLoader = new ImageLoader();
-
-        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
-        BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
 
         mario = new Mario(50, 50);
         mario.setJumping(true);
@@ -73,8 +69,6 @@ public class TestHero {
     public void testMarioFormGetCurrentStyle00() {
         ImageLoader imageLoader = new ImageLoader();
 
-        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
-        BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
         BufferedImage[] leftFrames = imageLoader.getLeftFrames(MarioForm.SMALL);
         BufferedImage[] rightFrames = imageLoader.getRightFrames(MarioForm.SMALL);
         Animation animation = new Animation(leftFrames, rightFrames);
@@ -95,8 +89,6 @@ public class TestHero {
     public void testMarioFormGetCurrentStyle01() {
         ImageLoader imageLoader = new ImageLoader();
 
-        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
-        BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
         BufferedImage[] leftFrames = imageLoader.getLeftFrames(MarioForm.SMALL);
         BufferedImage[] rightFrames = imageLoader.getRightFrames(MarioForm.SMALL);
         Animation animation = new Animation(leftFrames, rightFrames);
@@ -117,8 +109,6 @@ public class TestHero {
     public void testMarioFormGetCurrentStyle02() {
         ImageLoader imageLoader = new ImageLoader();
 
-        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
-        BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
         BufferedImage[] leftFrames = imageLoader.getLeftFrames(MarioForm.SMALL);
         BufferedImage[] rightFrames = imageLoader.getRightFrames(MarioForm.SMALL);
         Animation animation = new Animation(leftFrames, rightFrames);
@@ -139,8 +129,6 @@ public class TestHero {
     public void testMarioFormGetCurrentStyle03() {
         ImageLoader imageLoader = new ImageLoader();
 
-        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
-        BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
         BufferedImage[] leftFrames = imageLoader.getLeftFrames(MarioForm.SMALL);
         BufferedImage[] rightFrames = imageLoader.getRightFrames(MarioForm.SMALL);
         Animation animation = new Animation(leftFrames, rightFrames);
@@ -161,8 +149,6 @@ public class TestHero {
     public void testMarioFormGetCurrentStyle04() {
         ImageLoader imageLoader = new ImageLoader();
 
-        BufferedImage sprite = imageLoader.loadImage("/sprite.png");
-        BufferedImage brickStyle = imageLoader.getSubImage(sprite, 1, 1, 48, 48);
         BufferedImage[] leftFrames = imageLoader.getLeftFrames(MarioForm.SMALL);
         BufferedImage[] rightFrames = imageLoader.getRightFrames(MarioForm.SMALL);
         Animation animation = new Animation(leftFrames, rightFrames);
@@ -175,13 +161,72 @@ public class TestHero {
         assert(compareImages(retStyle, style));
     }
 
-    @Test
-    public void testMarioFormOnTouchEnemy00() {
-
-    }
-
+    /**
+     * test MarioForm class fire method.
+     * Branch 1: isFire
+     */
     @Test
     public void testMarioFormFire00() {
+        ImageLoader imageLoader = new ImageLoader();
+        BufferedImage[] leftFrames = imageLoader.getLeftFrames(MarioForm.SMALL);
+        BufferedImage[] rightFrames = imageLoader.getRightFrames(MarioForm.SMALL);
+        Animation animation = new Animation(leftFrames, rightFrames);
 
+        BufferedImage style = animation.getLeftFrames()[1];
+
+        mariof = new MarioForm(animation, false, true);
+        Fireball fireball = mariof.fire(true, 10, 10);
+
+        assert(fireball != null);
+    }
+
+    /**
+     * test MarioForm class fire method.
+     * Branch 2: !isFire
+     */
+    @Test
+    public void testMarioFormFire01() {
+        ImageLoader imageLoader = new ImageLoader();
+        BufferedImage[] leftFrames = imageLoader.getLeftFrames(MarioForm.SMALL);
+        BufferedImage[] rightFrames = imageLoader.getRightFrames(MarioForm.SMALL);
+        Animation animation = new Animation(leftFrames, rightFrames);
+
+        BufferedImage style = animation.getLeftFrames()[1];
+
+        mariof = new MarioForm(animation, false, false);
+        Fireball fireball = mariof.fire(true, 10, 10);
+
+        assert(fireball == null);
+    }
+
+    /** test Mario class move method.
+     * Branch 1: toRight
+     */
+    @Test
+    public void testMarioMove00() {
+        Camera cam = new Camera();
+        mario = new Mario(50, 50);
+
+        mario.move(true, cam);
+
+        assert(mario.getVelX() == 5);
+        assert(mario.getToRight());
+    }
+
+    /** test Mario class move method.
+     * Integration testing to check correct interaction
+     * between move method and Camera class.
+     * Branch 1: !toRight and camera.getX() < getX()
+     */
+    @Test
+    public void testMarioMove01() {
+        Camera cam = new Camera();
+        cam.setX(1);
+        mario = new Mario(50, 50);
+
+        mario.move(false, cam);
+
+        assert(mario.getVelX() == -5);
+        assert(!mario.getToRight());
     }
 }
