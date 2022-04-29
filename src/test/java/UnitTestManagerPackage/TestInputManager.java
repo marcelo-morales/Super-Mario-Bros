@@ -29,35 +29,43 @@ public class TestInputManager {
 
     }
 
+    /*
+    Whitebox testing - test input manager registers when someone presses the up key in start screen of game.
+     */
     @Test
     public void testKeyPressedKeyUpGameStatusStartScreen(){
-        //KeyEvent keyEvent = new KeyEvent();
         Button a = new Button("click");
-        KeyEvent e;
-        e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 38, 'a');
+        KeyEvent e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 38, 'a');
         gameEngine.setGameStatus(GameStatus.START_SCREEN);
         inputManager.keyPressed(e);
+        assertNotNull(inputManager);
     }
 
+    /*
+   Whitebox testing - test input manager registers when someone presses the up key in the map selection screen of game.
+    */
     @Test
     public void testKeyPressedKeyUpGameStatusMapSelection(){
-        //KeyEvent keyEvent = new KeyEvent();
         Button a = new Button("click");
-        KeyEvent e;
-        e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 38, 'a');
+        KeyEvent e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 38, 'a');
         gameEngine.setGameStatus(GameStatus.MAP_SELECTION);
         inputManager.keyPressed(e);
+        assertNotNull(inputManager);
     }
 
+    /*
+    Whitebox testing - test input manager registers when someone presses the up key with no game status set
+     */
     @Test
     public void testKeyPressedKeyUpNoGameStatusSet(){
-        //KeyEvent keyEvent = new KeyEvent();
         Button a = new Button("click");
-        KeyEvent e;
-        e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 38, 'a');
+        KeyEvent e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 38, 'a');
         inputManager.keyPressed(e);
     }
 
+    /*
+    Whitebox testing - test input manager registers when someone presses the down key with game status of start screen.
+     */
     @Test
     public void testKeyPressedKeyDownGameStatusStart(){
         //KeyEvent keyEvent = new KeyEvent();
@@ -70,6 +78,9 @@ public class TestInputManager {
 
     }
 
+    /*
+    Whitebox testing - test input manager registers when someone presses the down key in map selection page.
+     */
     @Test
     public void testKeyPressedKeyDownGameStatusMapSelection(){
         //KeyEvent keyEvent = new KeyEvent();
@@ -82,79 +93,90 @@ public class TestInputManager {
 
     }
 
+    /*
+    Whitebox testing - test input manager registers when someone presses the up right key in keyboard.
+     */
     @Test
     public void testKeyPressedKeyRight(){
-        //KeyEvent keyEvent = new KeyEvent();
         Button a = new Button("click");
-        KeyEvent e;
-        e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 39, 'a');
+        KeyEvent e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 39, 'a');
         inputManager.keyPressed(e);
         assertNotNull(inputManager);
     }
 
+    /*
+    Whitebox testing - test input manager registers when someone presses the left key on keyboard.
+     */
     @Test
     public void testKeyPressedKeyLeft(){
-        //KeyEvent keyEvent = new KeyEvent();
         Button a = new Button("click");
-        KeyEvent e;
-        e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 37, 'a');
+        KeyEvent e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 37, 'a');
         inputManager.keyPressed(e);
         assertNotNull(inputManager);
     }
 
+    /*
+   Whitebox testing - test input manager registers when someone presses the enter key on keyboard.
+    */
     @Test
     public void testKeyPressedKeyEnter(){
-        //KeyEvent keyEvent = new KeyEvent();
         Button a = new Button("click");
-        KeyEvent e;
-        e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 10, 'a');
+        KeyEvent e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 10, 'a');
         inputManager.keyPressed(e);
         assertNotNull(inputManager);
     }
 
+    /*
+   Whitebox testing - test input manager registers when someone presses the escape key on keyboard when game is running.
+    */
     @Test
     @Disabled
     public void testKeyPressedKeyEscapeGameStatusRunning(){
         Button a = new Button("click");
-        KeyEvent e;
-        e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 27, 'a');
+        KeyEvent e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 27, 'a');
         gameEngine.setGameStatus(GameStatus.RUNNING);
         inputManager.keyPressed(e);
         assertNotNull(inputManager);
     }
 
+    /*
+  Whitebox testing - test input manager registers when someone presses the escape key when the game is paused.
+   */
     @Test
     public void testKeyPressedKeyEscapeGameStatusPaused(){
-        //KeyEvent keyEvent = new KeyEvent();
         Button a = new Button("click");
-        KeyEvent e;
-        e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 27, 'a');
+        KeyEvent e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 27, 'a');
         gameEngine.setGameStatus(GameStatus.PAUSED);
         inputManager.keyPressed(e);
         assertNotNull(inputManager);
     }
 
+    /*
+  Whitebox testing - test input manager registers when someone presses the escape key when the game is in the start screen.
+   */
     @Test
     public void testKeyPressedKeyEscape(){
-        //KeyEvent keyEvent = new KeyEvent();
         Button a = new Button("click");
-        KeyEvent e;
-        e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 27, 'a');
+        KeyEvent e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 27, 'a');
         gameEngine.setGameStatus(GameStatus.START_SCREEN);
         inputManager.keyPressed(e);
         assertNotNull(inputManager);
     }
 
+    /*
+  Whitebox testing - test input manager registers when someone presses the space key on keyboard.
+   */
     @Test
     public void testKeyPressedKeySpace(){
-        //KeyEvent keyEvent = new KeyEvent();
         Button a = new Button("click");
-        KeyEvent e;
-        e = new KeyEvent(a, 1, 27, InputEvent.SHIFT_MASK, 32, 'a');
+        KeyEvent e = new KeyEvent(a, 1, 27, InputEvent.SHIFT_MASK, 32, 'a');
         inputManager.keyPressed(e);
         assertNotNull(inputManager);
     }
 
+    /*
+  Whitebox testing - test that when a key is typed on the keyboard that this key is registered.
+   */
     @Test
     public void keyTypedTest() {
         Button a = new Button("click");
@@ -163,6 +185,9 @@ public class TestInputManager {
         assertNotNull(inputManager);
     }
 
+    /*
+  Whitebox testing - clicking on something on the screen with mouse is registered.
+   */
     @Test
     public void mouseClickedTest() {
         Button componentButton = new Button("click");
@@ -172,6 +197,9 @@ public class TestInputManager {
 
     }
 
+    /*
+  Whitebox testing - When mouse is released after a long click, this is registered in the game.
+   */
     @Test
     public void mouseReleasedTest() {
         Button componentButton = new Button("click");
@@ -180,6 +208,9 @@ public class TestInputManager {
         assertNotNull(inputManager);
     }
 
+    /*
+  Whitebox testing - test input manager when someone clicks on the mouse when game is paused
+   */
     @Test
     public void testMousePressed() {
         Button componentButton = new Button("click");
@@ -189,6 +220,9 @@ public class TestInputManager {
         assertNotNull(inputManager);
     }
 
+    /*
+  Whitebox testing - test input manager registers when mouse is entered.
+   */
     @Test
     public void testMouseEntered() {
         Button componentButton = new Button("click");
@@ -198,6 +232,9 @@ public class TestInputManager {
         assertNotNull(inputManager);
     }
 
+    /*
+  Whitebox testing - test input manager registers when mouse exits.
+   */
     @Test
     public void testMouseExited() {
         Button componentButton = new Button("click");
@@ -207,24 +244,31 @@ public class TestInputManager {
         assertNotNull(inputManager);
     }
 
+    /*
+  Whitebox testing - test input manager registers when a key is released with right arrow key.
+   */
     @Test
     public void testKeyReleasedWhenRight() {
         Button a = new Button("click");
-        KeyEvent e;
-        e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 39, 'a');
+        KeyEvent e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 39, 'a');
         inputManager.keyReleased(e);
         assertNotNull(inputManager);
     }
 
+    /*
+  Whitebox testing - test input manager registers when a key is released with left arrow key.
+   */
     @Test
     public void testKeyReleasedWhenLeft() {
         Button a = new Button("click");
-        KeyEvent e;
-        e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 37, 'a');
+        KeyEvent e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 37, 'a');
         inputManager.keyReleased(e);
         assertNotNull(inputManager);
     }
 
+    /*
+ Whitebox testing - test input manager registers when mouse is pressed in map selection page.
+  */
     @Test
     @Disabled
     public void testMousePressedWithMapSelection() {
@@ -233,17 +277,6 @@ public class TestInputManager {
         gameEngine.setGameStatus(GameStatus.MAP_SELECTION);
         inputManager.mousePressed(keyEvent);
         assertNotNull(inputManager);
-
-    }
-
-    @Test
-    public void testKeyReleased() {
-        Button a = new Button("click");
-        KeyEvent e = new KeyEvent(a, 1, 20, InputEvent.SHIFT_MASK, 37, 'a');
-        inputManager.keyReleased(e);
-        assertNotNull(inputManager);
-
-
     }
 
 

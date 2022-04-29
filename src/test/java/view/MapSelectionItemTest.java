@@ -45,6 +45,7 @@ public class MapSelectionItemTest {
      *      Point location - {null, not null}
      *          base: not null
      */
+    // TODO: disabled tag
     @Disabled
     @Test
     void testConstructorNullMap() {
@@ -66,6 +67,7 @@ public class MapSelectionItemTest {
      *      Point location - {null, not null}
      *          base: not null
      */
+    // TODO: disabled tag
     @Disabled
     @Test
     void testConstructorInvalidMap() {

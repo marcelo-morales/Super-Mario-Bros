@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameObject.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Super-Mario-Bros</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">GameObject.java</span></div><h1>GameObject.java</h1><pre class="source lang-java linenums">package model;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+public abstract class GameObject {
+
+    private double x, y;
+
+    private double velX, velY;
+
+    private Dimension dimension;
+
+    private BufferedImage style;
+
+    private double gravityAcc;
+
+    private boolean falling, jumping;
+
+<span class="fc" id="L20">    public GameObject(double x, double y, BufferedImage style){</span>
+<span class="fc" id="L21">        setLocation(x, y);</span>
+<span class="fc" id="L22">        setStyle(style);</span>
+
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if(style != null){</span>
+<span class="fc" id="L25">            setDimension(style.getWidth(), style.getHeight());</span>
+        }
+
+<span class="fc" id="L28">        setVelX(0);</span>
+<span class="fc" id="L29">        setVelY(0);</span>
+<span class="fc" id="L30">        setGravityAcc(0.38);</span>
+<span class="fc" id="L31">        jumping = false;</span>
+<span class="fc" id="L32">        falling = true;</span>
+<span class="fc" id="L33">    }</span>
+
+    public void draw(Graphics g) {
+<span class="fc" id="L36">        BufferedImage style = getStyle();</span>
+
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        if(style != null){</span>
+<span class="fc" id="L39">            g.drawImage(style, (int)x, (int)y, null);</span>
+        }
+
+        //for debugging
+        /*Graphics2D g2 = (Graphics2D)g;
+        g2.setColor(Color.WHITE);
+
+        g2.draw(getTopBounds());
+        g2.draw(getBottomBounds());
+        g2.draw(getRightBounds());
+        g2.draw(getLeftBounds());*/
+<span class="fc" id="L50">    }</span>
+
+    public void updateLocation() {
+<span class="fc bfc" id="L53" title="All 4 branches covered.">        if(jumping &amp;&amp; velY &lt;= 0){</span>
+<span class="fc" id="L54">            jumping = false;</span>
+<span class="fc" id="L55">            falling = true;</span>
+        }
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        else if(jumping){</span>
+<span class="fc" id="L58">            velY = velY - gravityAcc;</span>
+<span class="fc" id="L59">            y = y - velY;</span>
+        }
+
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if(falling){</span>
+<span class="fc" id="L63">            y = y + velY;</span>
+<span class="fc" id="L64">            velY = velY + gravityAcc;</span>
+        }
+
+<span class="fc" id="L67">        x = x + velX;</span>
+<span class="fc" id="L68">    }</span>
+
+    public void setLocation(double x, double y) {
+<span class="fc" id="L71">        setX(x);</span>
+<span class="fc" id="L72">        setY(y);</span>
+<span class="fc" id="L73">    }</span>
+
+    public double getX() {
+<span class="fc" id="L76">        return x;</span>
+    }
+
+    public void setX(double x) {
+<span class="fc" id="L80">        this.x = x;</span>
+<span class="fc" id="L81">    }</span>
+
+    public double getY() {
+<span class="fc" id="L84">        return y;</span>
+    }
+
+    public void setY(double y) {
+<span class="fc" id="L88">        this.y = y;</span>
+<span class="fc" id="L89">    }</span>
+
+    public Dimension getDimension(){
+<span class="fc" id="L92">        return dimension;</span>
+    }
+
+    public void setDimension(Dimension dimension) {
+<span class="nc" id="L96">        this.dimension = dimension;</span>
+<span class="nc" id="L97">    }</span>
+
+<span class="fc" id="L99">    public void setDimension(int width, int height){ this.dimension =  new Dimension(width, height); }</span>
+
+    public BufferedImage getStyle() {
+<span class="fc" id="L102">        return style;</span>
+    }
+
+    public void setStyle(BufferedImage style) {
+<span class="fc" id="L106">        this.style = style;</span>
+<span class="fc" id="L107">    }</span>
+
+    public double getVelX() {
+<span class="fc" id="L110">        return velX;</span>
+    }
+
+    public void setVelX(double velX) {
+<span class="fc" id="L114">        this.velX = velX;</span>
+<span class="fc" id="L115">    }</span>
+
+    public double getVelY() {
+<span class="fc" id="L118">        return velY;</span>
+    }
+
+    public void setVelY(double velY) {
+<span class="fc" id="L122">        this.velY = velY;</span>
+<span class="fc" id="L123">    }</span>
+
+    public double getGravityAcc() {
+<span class="nc" id="L126">        return gravityAcc;</span>
+    }
+
+    public void setGravityAcc(double gravityAcc) {
+<span class="fc" id="L130">        this.gravityAcc = gravityAcc;</span>
+<span class="fc" id="L131">    }</span>
+
+    public Rectangle getTopBounds(){
+<span class="fc" id="L134">        return new Rectangle((int)x+dimension.width/6, (int)y, 2*dimension.width/3, dimension.height/2);</span>
+    }
+
+    public Rectangle getBottomBounds(){
+<span class="fc" id="L138">        return new Rectangle((int)x+dimension.width/6, (int)y + dimension.height/2, 2*dimension.width/3, dimension.height/2);</span>
+    }
+
+    public Rectangle getLeftBounds(){
+<span class="fc" id="L142">        return new Rectangle((int)x, (int)y + dimension.height/4, dimension.width/4, dimension.height/2);</span>
+    }
+
+    public Rectangle getRightBounds(){
+<span class="fc" id="L146">        return new Rectangle((int)x + 3*dimension.width/4, (int)y + dimension.height/4, dimension.width/4, dimension.height/2);</span>
+    }
+
+    public Rectangle getBounds(){
+<span class="fc" id="L150">        return new Rectangle((int)x, (int)y, dimension.width, dimension.height);</span>
+    }
+
+    public boolean isFalling() {
+<span class="fc" id="L154">        return falling;</span>
+    }
+
+    public void setFalling(boolean falling) {
+<span class="fc" id="L158">        this.falling = falling;</span>
+<span class="fc" id="L159">    }</span>
+
+    public boolean isJumping() {
+<span class="fc" id="L162">        return jumping;</span>
+    }
+
+    public void setJumping(boolean jumping) {
+<span class="fc" id="L166">        this.jumping = jumping;</span>
+<span class="fc" id="L167">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
