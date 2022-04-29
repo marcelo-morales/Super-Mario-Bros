@@ -9,7 +9,6 @@ import model.hero.Mario;
 import model.prize.Coin;
 import model.prize.FireFlower;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import view.ImageLoader;
 
@@ -30,6 +29,9 @@ public class TestMapManager {
         mapManager = new MapManager();
     }
 
+    /*
+    Test that locations are not updated when map is not initialized.
+     */
     @Test
     public void testLocationsNotUpdatedWhenMapIsNull() {
         MapManager mapManagerWithMapNull = new MapManager();
@@ -37,6 +39,9 @@ public class TestMapManager {
         assertNull(mapManagerWithMapNull.map);
     }
 
+     /*
+    Test that map is not able to be created with a buggy path
+     */
     @Test
     public void testMapCreateFails() {
         ImageLoader imageLoader = new ImageLoader();
@@ -44,8 +49,10 @@ public class TestMapManager {
     }
 
 
+    /*
+    Test that mario is not null when mario is hit by fire.
+     */
     @Test
-    //fix this for branch coverage
     public void testWhenMarioGettingFireNotNull() {
         ImageLoader imageLoader = new ImageLoader();
         mapManager.createMap(imageLoader, "/Map 1.png");
@@ -57,6 +64,9 @@ public class TestMapManager {
         assertNotNull(mapManager.getMario());
     }
 
+    /*
+   Test that collisions cannot be checked with a null map.
+    */
     @Test
     public void testCheckCollisionsWithANullMap() {
         MapManager mapManagerWithNullMap = new MapManager();
@@ -91,7 +101,6 @@ public class TestMapManager {
 
         double marioVelY = resetMario.getVelX();
         assertEquals(marioVelY, 0, 0.001);
-        //use mockito to check that a method has been called?
     }
 
     /*
@@ -233,6 +242,9 @@ public class TestMapManager {
 
     }
 
+    /*
+    Test that collisions happen with enemies and fireballs added.
+    */
     @Test
     public void testCheckCollisionWithEnemiesFireballsAdded() {
         ImageLoader imageLoader = new ImageLoader();
@@ -266,7 +278,7 @@ public class TestMapManager {
     }
 
     /*
-     Test to check whether there are collisions with an initialized map.
+     Test to check whether there are collisions with an initialized map with prize objects having positive coordinates.
      */
     @Test
     public void testCheckCollisionsWithMapNotNullBrickVelPositive() {
@@ -291,7 +303,7 @@ public class TestMapManager {
     }
 
     /*
-    Test to check whether there are collisions with an initialized map.
+    Test to check whether there are collisions with an initialized map and prize objects have negative coordinates after.
     */
     @Test
     public void testCheckCollisionsWithMapNotNullBrickVelNegative() {
@@ -316,7 +328,7 @@ public class TestMapManager {
     }
 
     /*
-   Test to check whether there are collisions with an initialized map.
+   Test to check whether there are collisions with an initialized map and bricks added with a very large prize object y coordinate.
    */
     @Test
     public void testCheckCollisionsWithMapNotNullBoostItemGreaterThanBottomBorder() {
@@ -344,7 +356,7 @@ public class TestMapManager {
     }
 
     /*
-    Adding tests for prize collisions
+    Check that prize objects collide when they have the same coordinates.
      */
     @Test
     public void testCheckPrizeCollisionWithLotsOfPrizes() {
@@ -377,10 +389,6 @@ public class TestMapManager {
         assertNotNull(mapManager);
     }
 
-    @Test
-    public void testCheckPrizeCollisionPartTwo() {
-
-    }
 
     /*
     Test whether a revealed brick is able to be added successfully to the map.
@@ -407,6 +415,64 @@ public class TestMapManager {
         mapManager.updateTime();
         assertEquals(mapManager.getRemainingTime(), 399);
     }
+
+    /*
+    Blackbox testing on createMap() with equivalence partitioning
+
+    EP: String path - {null, empty string, not  empty string invalid path, valid path string}
+     */
+    @Test
+    public void testCreateMapWithNullString () {
+        ImageLoader imageLoader = new ImageLoader();
+        String path = null;
+
+        assertThrows(IllegalArgumentException.class, () ->
+        {
+            mapManager.createMap(imageLoader, path);
+        });
+
+    }
+
+    /*
+   Blackbox testing on createMap() with equivalence partitioning
+
+   EP: String path - {null, empty string, not  empty string invalid path, valid path string}
+    */
+    @Test
+    public void testCreateMapWithEmptyString() {
+        ImageLoader imageLoader = new ImageLoader();
+        String path = "";
+        mapManager.createMap(imageLoader, path);
+        assertNull(mapManager.map);
+    }
+
+    /*
+   Blackbox testing on createMap() with equivalence partitioning
+
+   EP: String path - {null, empty string, not  empty string invalid path, valid path string}
+    */
+    @Test
+    public void testCreateMapWithStringButIncorrect() {
+        ImageLoader imageLoader = new ImageLoader();
+        String path = "/this path does not lead to a map";
+        mapManager.createMap(imageLoader, path);
+        assertNull(mapManager.map);
+    }
+
+    /*
+   Blackbox testing on createMap() with equivalence partitioning
+
+   EP: String path - {null, empty string, not  empty string invalid path, valid path string}
+    */
+    @Test
+    public void testCreateMapWithCorrectString() {
+        ImageLoader imageLoader = new ImageLoader();
+        String path = "/Map 1.png";
+        mapManager.createMap(imageLoader, path);
+        assertNotNull(mapManager.map);
+    }
+
+
 
 
 }

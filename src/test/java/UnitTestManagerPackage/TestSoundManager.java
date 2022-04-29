@@ -4,8 +4,7 @@ import manager.SoundManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class TestSoundManager {
@@ -17,6 +16,9 @@ public class TestSoundManager {
         soundManager = new SoundManager();
     }
 
+    /*
+    Test that when resume background sound can successfully be played.
+     */
     @Test
     public void testResumeBackground() {
 
@@ -24,12 +26,18 @@ public class TestSoundManager {
         assertTrue(soundManager.background.isOpen());
     }
 
+    /*
+   Test that when pause background sound can successfully be played.
+    */
     @Test
     public void testPauseBackground() {
         soundManager.pauseBackground();
         assertFalse(soundManager.background.isRunning());
     }
 
+    /*
+   Test that restart background sound can successfully be played.
+    */
     @Test
     public void testRestartBackground() {
         soundManager.restartBackground();
@@ -38,75 +46,78 @@ public class TestSoundManager {
         assertTrue(soundManager.background.isRunning());
     }
 
-    @Test
     /*
     Test sound outputted when Mario jumps.
      */
+    @Test
     public void testPlayJump(){
         soundManager.playJump();
-
+        assertNotNull(soundManager);
     }
 
-    @Test
     /*
-    Test sound when user receives a coin.
-     */
+   Test sound when user receives a coin.
+    */
+    @Test
     public void testPlayCoin(){
         soundManager.playCoin();
-
+        assertNotNull(soundManager);
     }
 
-    @Test
     /*
-    Test sound when user encounters a fireball.
-     */
+  Test sound when user encounters a fireball.
+   */
+    @Test
     public void testPlayFireball(){
         soundManager.playFireball();
-
+        assertNotNull(soundManager);
     }
 
-    @Test
     /*
-    Test sound when the game ends.
-     */
+  Test sound when the game ends.
+   */
+    @Test
     public void testGameOver() {
         soundManager.playGameOver();
-
+        assertNotNull(soundManager);
     }
 
-    @Test
     /*
-    Test the sound when Mario stomps on an enemy.
-     */
+ Test the sound when Mario stomps on an enemy.
+  */
+    @Test
     public void testPlayStomp() {
         soundManager.playStomp();
-
+        assertNotNull(soundManager);
     }
 
-    @Test
     /*
-    Test the sound when Mario receives a one up
-     */
+  Test the sound when Mario receives a one up
+   */
+    @Test
     public void testPlayOneUp() {
         soundManager.playOneUp();
+        assertNotNull(soundManager);
 
     }
 
-    @Test
     /*
-    Test the sound that is outputted when a mushroom is received.
-     */
+   Test the sound that is outputted when a mushroom is received.
+    */
+    @Test
     public void testPlaySuperMushroom() {
         soundManager.playSuperMushroom();
+        assertNotNull(soundManager);
 
     }
 
-    @Test
     /*
-    Test the sound that is outputted when Mario dies.
-     */
+   Test the sound that is outputted when Mario dies.
+    */
+    @Test
     public void testPlayMarioDies() {
         soundManager.playMarioDies();
+        assertNotNull(soundManager);
     }
 
 

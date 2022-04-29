@@ -24,7 +24,6 @@ public class TestGameEngine {
         gameEngine = new GameEngine();
         ImageLoader imageLoader = new ImageLoader();
         mg = new MapManager();
-        //gameEngine.createMap("/Map 1.png");
         mg.createMap(imageLoader, "/Map 1.png");
     }
 
@@ -35,34 +34,27 @@ public class TestGameEngine {
     @Test
     public void testGameEngineInit() {
         assertSame(gameEngine.getGameStatus(), GameStatus.START_SCREEN);
-        //assertTrue(gameEngine.isRunning);
     }
 
-    @Test
     /*
     Test setting the game as game over.
-     */
+    */
+    @Test
     public void testGameEngineReset() {
         gameEngine.setGameStatus(GameStatus.GAME_OVER);
         gameEngine.receiveInput(ButtonAction.GO_TO_START_SCREEN);
         assertEquals(gameEngine.getGameStatus(),GameStatus.START_SCREEN);
     }
 
-    @Test
     /*
-    Test selecting the map with mouse
-     */
+  Test selecting the map with mouse
+   */
+    @Test
     public void testSelectingMapWithMouse() {
         gameEngine.selectMapViaMouse();
         assertEquals(gameEngine.getGameStatus(), GameStatus.START_SCREEN);
     }
 
-//    @Test
-//    public void testGameRunning() {
-//        gameEngine.run();
-//        assertEquals(gameEngine.getGameStatus(), GameStatus.RUNNING);
-//        gameEngine.setGameStatus(GameStatus.PAUSED);
-//    }
 
     /*
     Test receiving a keyboard input of select key when we are in the start screen.
@@ -99,8 +91,8 @@ public class TestGameEngine {
     }
 
     /*
- Test when input has button action select and start screen selection of view about
-  */
+    Test when input has button action select and start screen selection of view about
+    */
     @Test
     public void testReceiveInputGameStatusStartScreenInputSelectStartScreenViewHelp() {
         gameEngine.setGameStatus(GameStatus.START_SCREEN);
@@ -110,8 +102,8 @@ public class TestGameEngine {
     }
 
     /*
-Test when input has button action select and start screen selection of view about
-*/
+    Test when input has button action select and start screen selection of view about
+    */
     @Test
     public void testReceiveInputGameStatusStartScreenInputGoUp() {
         gameEngine.setGameStatus(GameStatus.START_SCREEN);
@@ -120,8 +112,8 @@ Test when input has button action select and start screen selection of view abou
     }
 
     /*
-Test when input has button action select and start screen selection of view about
-*/
+    Test when input has button action select and start screen selection of view about
+    */
     @Test
     public void testReceiveInputGameStatusStartScreenInputGoDown() {
         gameEngine.setGameStatus(GameStatus.START_SCREEN);
@@ -130,8 +122,8 @@ Test when input has button action select and start screen selection of view abou
     }
 
     /*
-Test when input has button action select and start screen selection of view about
-*/
+    Test when input has button action select and start screen selection of view about
+    */
     @Test
     public void testReceiveInputGameStatusPause() {
         gameEngine.setGameStatus(GameStatus.PAUSED);
@@ -140,8 +132,8 @@ Test when input has button action select and start screen selection of view abou
     }
 
     /*
-Test when input has button action select and start screen selection of view about
-*/
+    Test when input has button action select and start screen selection of view about
+    */
     @Test
     public void testReceiveInputGameStatusMissionPassedInputGoToStartScreen() {
         gameEngine.setGameStatus(GameStatus.MISSION_PASSED);
@@ -161,14 +153,19 @@ Test when input has button action select and start screen selection of view abou
 
 
 
+    /*
+    Test that game status is changed when going to the map selection page and clicking select.
+     */
     @Test
-    //bug game status is not changed when selecting map
     public void testReceiveInputWithMapSelectionButtonSelect() {
         gameEngine.setGameStatus(GameStatus.MAP_SELECTION);
         gameEngine.receiveInput(ButtonAction.SELECT);
         assertEquals(GameStatus.MAP_SELECTION, gameEngine.getGameStatus());
     }
 
+    /*
+    Test that game status is changed when going to the map selection page and clicking up
+     */
     @Test
     public void testReceiveInputWithMapSelectionButtonUp() {
         gameEngine.setGameStatus(GameStatus.MAP_SELECTION);
@@ -177,7 +174,7 @@ Test when input has button action select and start screen selection of view abou
     }
 
     /*
-    Test when clicking down button this allows me to select another map
+    Test when clicking down button this allows me to select another map.
      */
     @Test
     public void testReceiveInputWithMapSelectionButtonDown() {
@@ -186,13 +183,20 @@ Test when input has button action select and start screen selection of view abou
         assertEquals(GameStatus.MAP_SELECTION, gameEngine.getGameStatus());
     }
 
+    /*
+    Test that checks game status is still in the map selection page when starting out in
+    start screen and hitting the select button.
+     */
     @Test
     public void testReceiveInputGameStatusStartScreenScreenSelectionViewAbout() {
         gameEngine.setGameStatus(GameStatus.START_SCREEN);
         gameEngine.receiveInput(ButtonAction.SELECT);
-        //startScreenSelection.VIEW_ABOUT;
+        assertEquals(GameStatus.MAP_SELECTION, gameEngine.getGameStatus());
     }
 
+    /*
+    Check that the game is still running when Mario jumps.
+     */
     @Test
     public void testGameStatusRunningButtonActionJump() {
         gameEngine.setGameStatus(GameStatus.RUNNING);
@@ -200,11 +204,6 @@ Test when input has button action select and start screen selection of view abou
         Mario mario = new Mario(0.1, 0.1);
         myMap.setMario(mario);
         gameEngine.receiveInput(ButtonAction.JUMP);
-        //mg.
-        //mario should jump
-        //assertTrue(gameEngine.getMapManager().getMario().isJumping());
-        //how to get complete branch coverage when game status is running, will need to
-        //interact with other classes as well
         assertEquals(gameEngine.getGameStatus(), GameStatus.RUNNING);
     }
 
@@ -214,7 +213,6 @@ Test when input has button action select and start screen selection of view abou
      */
     @Test
     public void testReceiveInputWithGameStatusRunningButtonActionJumping() {
-
         gameEngine.createMap("/Map 1.png");
         gameEngine.setGameStatus(GameStatus.RUNNING);
         gameEngine.receiveInput(ButtonAction.JUMP);
@@ -286,7 +284,7 @@ Test when input has button action select and start screen selection of view abou
     }
 
     /*
-  Test when the game is running and the pause button is pressed, that correct functionality continues.
+  Test when the game is running and the pause button is pressed, that the game did not end.
    */
     @Test
     public void testReceiveInputWithGameStatusRunningButtonActionResume() {
@@ -379,8 +377,6 @@ Test when input has button action select and start screen selection of view abou
         MapManager mapManager = gameEngine.getMapManager();
         assertNotNull(mapManager);
     }
-
-
 
 
 
