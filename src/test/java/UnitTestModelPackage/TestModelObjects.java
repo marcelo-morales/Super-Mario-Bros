@@ -2,7 +2,7 @@ package UnitTestModelPackage;
 
 import org.junit.jupiter.api.Test;
 
-public class TestMap {
+public class TestModelObjects {
     /**
      * test updateLocation function
      */
